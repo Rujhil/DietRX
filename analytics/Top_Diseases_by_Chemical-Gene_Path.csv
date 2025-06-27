@@ -1,0 +1,21 @@
+,disease_id,chemical_gene_links,disease_name,disease_synonyms,disease_category
+0,MESH:D012559,11461,Schizophrenia,,Mental disorder
+1,MESH:D001943,9148,Breast Neoplasms,,Cancer|Skin disease
+2,MESH:D011471,8933,Prostatic Neoplasms,,Cancer|Urogenital disease (male)
+3,MESH:D003866,7470,Depressive Disorder,,Mental disorder
+4,MESH:D001714,5897,Bipolar Disorder,,Mental disorder
+5,MESH:D013274,5804,Stomach Neoplasms,,Cancer|Digestive system disease
+6,MESH:D006528,5698,"Carcinoma, Hepatocellular",,Cancer|Digestive system disease
+7,MESH:D006973,5679,Hypertension,,Cardiovascular disease
+8,MESH:D008607,5423,Intellectual Disability,,Mental disorder|Nervous system disease|Signs and symptoms
+9,MESH:D012640,5220,Seizures,,Nervous system disease|Signs and symptoms
+10,MESH:D008175,4872,Lung Neoplasms,,Cancer|Respiratory tract disease
+11,MESH:D015179,4496,Colorectal Neoplasms,,Cancer|Digestive system disease
+12,MESH:D056486,4312,Chemical and Drug Induced Liver Injury,,Digestive system disease|Chemically-Induced Disorders
+13,MESH:D004827,4259,Epilepsy,,Nervous system disease
+14,MESH:D003921,4123,"Diabetes Mellitus, Experimental",,Endocrine system disease|Metabolic disease
+15,MESH:D009765,4040,Obesity,,Nutrition disorder|Signs and symptoms
+16,MESH:D009362,3993,Neoplasm Metastasis,,Cancer|Pathology (process)
+17,MESH:D009123,3941,Muscle Hypotonia,,Nervous system disease|Signs and symptoms
+18,MESH:D003110,3934,Colonic Neoplasms,,Cancer|Digestive system disease
+19,MESH:D015427,3844,Reperfusion Injury,,Cardiovascular disease|Pathology (process)

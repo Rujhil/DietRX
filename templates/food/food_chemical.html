@@ -1,0 +1,15 @@
+<div class="pt-4">
+
+  {# Hide the last (“Details”) column in this table only #}
+  <style>
+    /* targets only this page’s table by ID */
+    #results_table th:last-child,
+    #results_table td:last-child {
+      display: none !important;
+    }
+  </style>
+
+  {% include 'common/data_table_api.html' %}
+  {% include 'common/associations_details_ajax.html' %}
+
+</div>

@@ -1,0 +1,20 @@
+display_name,positive_count,negative_count
+Red wine,104,39
+Wine,82,97
+Beer,69,109
+Non caffeinated alcoholic beverage,61,111
+Cider,12,5
+White wine,10,11
+Whisky,2,12
+Tequila,2,1
+Brandy,2,3
+Rum,2,2
+Champagne,2,3
+Plum wine,1,0
+Vodka,1,22
+Rose wine,0,1
+Sherry,0,1
+Port wine,0,1
+Scotch,0,1
+Tonic water,0,2
+Apple brandy,0,2

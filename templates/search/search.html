@@ -1,0 +1,868 @@
+{% extends 'common/index.html' %}
+{% block extra_head %}
+<script type="application/javascript" src="{{ url_for('static', filename='jsme/jsme.nocache.js') }}"></script>
+<script type="text/javascript">
+  function autocomplete(id) {
+    $(id).autocomplete({
+      minLength: 3,
+      source: function (request, response) {
+        q = $(id)
+        $.ajax({
+          url: "{{ url_for('autocomplete') }}?table=" + q.attr('table') + "&query=" + request.term,
+          dataType: "json",
+          success: function (data) {
+            data = JSON.parse(data);
+            var newData = [];
+            for (var i = 0; i < data.length; ++i) {
+              newData.push({ 'value': data[i] })
+            }
+            response(Array.from(newData));
+          }
+        });
+      },
+      select: function (event, ui) {
+        $(id).val(ui.item.value);
+        $(id).closest('form').submit();
+      }
+    });
+  }
+  function search() {
+    $('.search-form').on('submit', function (event) {
+      event.preventDefault();
+      q = $(event.currentTarget).find('.query-field')
+      $.get("{{ url_for('search') }}?table=" + q.attr('table') + "&query=" + q.val(), function (data) {
+        $(q.attr('href')).html(data);
+      });
+    });
+  }
+  function search_loader(id) {
+    $('.query-field').hide();
+    $('#food_query').show();
+
+    $(id).on('change', function () {
+      if ($(this).val() === "food") {
+        $('.query-field').hide();
+        $('#food_query').show();
+      }
+      else if ($(this).val() === "disease") {
+        $('.query-field').hide();
+        $('#disease_query').show();
+      }
+      else if ($(this).val() === "gene") {
+        $('.query-field').hide();
+        $('#gene_query').show();
+      }
+      else if ($(this).val() === "chemical") {
+        $('.query-field').hide();
+        $('#chemical_query').show();
+      }
+    });
+  }
+  function show_chemical_structure_search() {
+    $('#chemical_structure_search_button').on('click', function (event) {
+      $('#chemical_structure_search').toggle()
+    });
+  }
+  $(document).ready(function () {
+    autocomplete('#food_query')
+    autocomplete('#disease_query')
+    autocomplete('#gene_query')
+    autocomplete('#chemical_query')
+    search()
+    show_chemical_structure_search()
+  });
+  $(document).ready(function () {
+    $(document).on('click', '.page-link', function (event) {
+      event.preventDefault();
+      $.get($(this).attr('href'), function (data) {
+        $('#results').html(data);
+      });
+    });
+  });
+
+  // Wait until everything is loaded
+  window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+  });
+
+  function drawCSVBar(slug, elementId, title) {
+    fetch(`/api/analytics/top50_csv/${slug}`)
+      .then(r => r.json())
+      .then(data => {
+        if (!data.length) {
+          document.getElementById(elementId).innerHTML = '<p>No data available.</p>';
+          return;
+        }
+
+        // Sort descending by positive_count
+        // Sort descending by positive_count
+        data.sort((a, b) => b.positive_count - a.positive_count);
+
+        // Preserve the correct order
+        const y = data.map(d => d.display_name);
+        const pos = data.map(d => d.positive_count);
+        const neg = data.map(d => d.negative_count);
+
+        Plotly.newPlot(elementId, [
+          {
+            y: y,
+            x: pos,
+            name: 'Positive',
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: '#28a745' }
+          },
+          {
+            y: y,
+            x: neg,
+            name: 'Negative',
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: '#dc3545' }
+          }
+        ], {
+          title: title,
+          barmode: 'stack',
+          xaxis: {
+            title: {
+              text: 'Number of Publications',
+              font: { size: 16, color: '#207872' }
+            },
+            tickfont: { color: '#207872' },
+            gridcolor: '#d6f2ef'
+          },
+          yaxis: {
+            title: {
+              text: 'Food',
+              font: { size: 16, color: '#207872' }
+            },
+            tickfont: { color: '#207872' },
+            automargin: true,
+            categoryorder: 'array',
+            categoryarray: y  // 👈 this ensures highest-positive is at the top
+          },
+          plot_bgcolor: '#f0ffe0',
+          paper_bgcolor: '#f0ffe0',
+          height: 700,
+          margin: { l: 200, t: 50, r: 50 }
+        });
+      });
+  }
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+  function submit_molecules() {
+
+    e.preventDefault();
+    $('#smiles').attr('value', jsmeAppletSearch.smiles());
+
+    document.getElementById("chemical-search-form").submit();
+
+  }
+  $(document).ready(function () {
+    $("#chemical-search-form").submit(function (e) {
+      e.preventDefault(e);
+      $('#smiles').attr('value', jsmeAppletSearch.smiles());
+      document.getElementById("chemical-search-form").submit();
+    });
+  });
+</script>
+<script type="text/javascript">
+  function jsmeOnLoad() {
+    var width = 500;
+    var height = 360;
+    if (height > 350) {
+      height = 350;
+    }
+    // console.log(height, width)
+    jsmeAppletSearch = new JSApplet.JSME("jsme_container_search", Math.abs(width).toString() + 'px', Math.abs(height).toString() + 'px');
+    $('#chemical_structure_search').hide()
+  }
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#alogp').removeClass('active');
+    $('#hbd').removeClass('active');
+    $('#hba').removeClass('active');
+  });
+</script>
+
+
+
+
+{% endblock %}
+{% block body %}
+<style>
+  .ui-autocomplete-loading {
+    background: white url("{{url_for('static',filename='images/ui-anim_basic_16x16.gif') }}") right center no-repeat;
+  }
+
+  .ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+</style>
+<style>
+  .search-options {
+    background-color: yellow;
+    font-weight: bold;
+  }
+
+  /* Custom button group styling */
+  .jumbotron .custom-btn-group {
+    background: #f7fafc;
+    border-radius: 1.5em;
+    box-shadow: 0 2px 12px rgba(32, 120, 114, 0.08);
+    padding: 1.5em 1em 1em 1em;
+    margin-bottom: 1em;
+    justify-content: center;
+    gap: 1em;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .jumbotron .custom-btn-group .btn {
+    background: #207872;
+    color: #fff;
+    border: none;
+    border-radius: 2em;
+    font-weight: 600;
+    font-size: 1.1em;
+    min-width: 140px;
+    margin: 0.3em 0.5em;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(32, 120, 114, 0.08);
+  }
+
+  .jumbotron .custom-btn-group .btn:hover,
+  .jumbotron .custom-btn-group .btn:focus {
+    background: #1f7872cc;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(32, 120, 114, 0.15);
+    text-decoration: none;
+  }
+
+  .jumbotron .custom-btn-group .btn:active {
+    background: #14544f;
+    color: #fff;
+  }
+
+  @media (max-width: 767px) {
+    .jumbotron .custom-btn-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .jumbotron .custom-btn-group .btn {
+      min-width: unset;
+      width: 100%;
+      margin: 0.3em 0;
+    }
+  }
+
+  /* Style the Search section header */
+  #search h5.container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    color: #207872;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+  }
+
+  #search h5.container img {
+    height: 2em;
+    width: auto;
+    margin-right: 0.5em;
+  }
+
+  /* Style the nav-tabs for search */
+  #search .nav-tabs {
+    border-bottom: 2px solid #207872;
+    margin-bottom: 1em;
+  }
+
+  #search .nav-tabs .nav-link {
+    color: #207872;
+    font-weight: 600;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom 0.2s, color 0.2s;
+    background: none;
+  }
+
+  #search .nav-tabs .nav-link.active,
+  #search .nav-tabs .nav-link:hover {
+    color: #fff;
+    background: #207872;
+    border-radius: 1.5em 1.5em 0 0;
+    border-bottom: 3px solid #14544f;
+  }
+
+  /* Style the search forms */
+  #search form {
+    background: #f7fafc;
+    border-radius: 1.5em;
+    box-shadow: 0 2px 12px rgba(32, 120, 114, 0.08);
+    padding: 1.5em 1em 1em 1em;
+    margin-bottom: 1.5em;
+  }
+
+  /* Style the search input fields */
+  #search input[type="text"],
+  #search input[type="search"],
+  #search select {
+    border: 1px solid #207872;
+    border-radius: 2em;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    margin-right: 0.5em;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  #search input[type="text"]:focus,
+  #search input[type="search"]:focus,
+  #search select:focus {
+    border: 1.5px solid #14544f;
+  }
+
+  /* Style the search buttons */
+  /* Container */
+  #search {
+    border-radius: 2em;
+    padding: 2em 1.5em;
+    margin-top: 3em;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Header styling */
+  #search h5.container {
+    font-size: 2em;
+    color: #1f7872;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5em;
+  }
+
+  #search h5.container img {
+    height: 2.5em;
+    margin-right: 0.8em;
+  }
+
+  /* Nav tabs */
+  #search .nav-tabs {
+    background-color: #ffffff;
+    border-radius: 1.5em;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(32, 120, 114, 0.1);
+    margin-bottom: 2em;
+  }
+
+  #search .nav-tabs .nav-link {
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 0.75em 1.5em;
+    border: none;
+    color: #207872;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  #search .nav-tabs .nav-link:hover {
+    background-color: #20787218;
+  }
+
+  #search .nav-tabs .nav-link.active {
+    background-color: #1f7872;
+    color: white;
+  }
+
+  /* Form */
+  #search form {
+    background: #ffffff;
+    border-radius: 1.5em;
+    padding: 2em 1.5em;
+    box-shadow: 0 4px 12px rgba(32, 120, 114, 0.08);
+    transition: box-shadow 0.2s ease;
+  }
+
+  #search form:hover {
+    box-shadow: 0 8px 20px rgba(32, 120, 114, 0.12);
+  }
+
+  /* Inputs */
+  #search input[type="text"],
+  #search input[type="search"],
+  #search select {
+    border-radius: 2em;
+    border: 1.5px solid #207872;
+    padding: 0.6em 1em;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 1em;
+    transition: all 0.2s ease;
+  }
+
+  #search input:focus,
+  #search select:focus {
+    border-color: #14544f;
+    box-shadow: 0 0 8px rgba(32, 120, 114, 0.25);
+  }
+
+  /* Buttons */
+  #search button,
+  #search input[type="submit"] {
+    background-color: #207872;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 0.6em 2em;
+    border-radius: 2em;
+    border: none;
+    transition: background 0.3s ease, box-shadow 0.2s ease;
+  }
+
+  #search button:hover,
+  #search input[type="submit"]:hover {
+    background-color: #14544f;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    #search h5.container {
+      font-size: 1.5em;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #search form {
+      padding: 1.5em 1em;
+    }
+  }
+
+
+  /* Animation keyframes */
+  @keyframes fadeSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Animate the search section when it comes into view */
+  #search {
+    animation: fadeSlideUp 0.8s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* Delay rendering till visible */
+  body.loaded #search {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Smooth transitions for form elements */
+  #search input[type="text"],
+  #search input[type="search"],
+  #search select,
+  #search button,
+  #search input[type="submit"] {
+    transition: all 0.3s ease;
+  }
+
+  /* On focus / hover effects */
+  #search input:focus,
+  #search select:focus {
+    box-shadow: 0 0 10px rgba(32, 120, 114, 0.25);
+  }
+
+  #search button:hover,
+  #search input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(32, 120, 114, 0.2);
+  }
+
+  /* Smooth fade between tab panes */
+  .tab-pane {
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .tab-pane.show.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  #analytics {
+    background: linear-gradient(to bottom, #ffffff, #f7fafc);
+    border-radius: 2em;
+    padding: 3em 2em;
+    margin-top: 4em;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    animation: fadeSlideUp 0.8s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* Show when body is loaded */
+  body.loaded #analytics {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Section header */
+  #analytics h2 {
+    font-size: 2.2em;
+    color: #1f7872;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5em;
+    position: relative;
+  }
+
+  #analytics h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #1f7872;
+    margin: 0.5em auto 0;
+    border-radius: 2px;
+  }
+
+  /* Button group */
+  #analytics .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 2em;
+  }
+
+  /* Analytics buttons */
+  .btn-analytics {
+    background-color: #ffffff;
+    color: #207872;
+    border: 2px solid #207872;
+    border-radius: 2em;
+    font-weight: 600;
+    font-size: 1em;
+    padding: 0.6em 1.5em;
+    transition: all 0.3s ease;
+  }
+
+  .btn-analytics:hover {
+    background-color: #207872;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(32, 120, 114, 0.2);
+  }
+
+  .btn-analytics-active {
+    background-color: #1f7872 !important;
+    color: white !important;
+    box-shadow: 0 6px 16px rgba(32, 120, 114, 0.25);
+  }
+
+  #analytics .section,
+  .section {
+    width: 100%;
+    overflow-x: auto;
+    padding: 2em 1em;
+    border-radius: 1.5em;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(32, 120, 114, 0.1);
+  }
+
+  #analytics .section:not(:first-child) {
+    margin-top: 2em;
+  }
+</style>
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+  </div>
+  <hr />
+
+  <h5 class="container"><strong>About</strong></h5>
+  <hr />
+  <div class="row">
+    <blockquote class="blockquote ml-2 mr-2">
+      In the past few years, there has been an increased awareness about the role of diet in disease
+      vulnerability. While individual studies have contributed fragments of information about the
+      health effects of different foods, a comprehensive overview is missing. Systematic
+      investigation of such empirical evidence from biomedical literature can facilitate valuable
+      insights for diet-based disease intervention and drug discovery. In DietRx, we have assimilated
+      the beneficial and adverse effects of 1781 foods on various diseases via text-mining from
+      more than 27 million MEDLINE abstracts. Our relation extraction pipeline based on state-of-
+      the-art named entity recognition tools and a highly accurate deep learning-based relation
+      classifier significantly improvises upon the work of previous studies. We further linked data of 6992
+      food-chemicals and their disease/gene associations to investigate the underlying mechanisms of food-disease
+      associations. Through information of the genes and foods connected with a disease, we formulate hypotheses of
+      food-gene associations and make them available for investigation by the biomedical research
+      community.
+
+    </blockquote>
+  </div>
+
+  <!-- Static images section, wide and matching analytics style -->
+  <div class="container" style="margin-top: 2em;">
+
+    <div class="row justify-content-center"
+      style="background: linear-gradient(to bottom, #f7fafc, #e6f2f1); border-radius: 2em; box-shadow: 0 10px 20px rgba(0,0,0,0.08); padding: 2em 1.5em;">
+      <div class="col-lg-10 mx-auto mb-4 d-flex align-items-center justify-content-center">
+
+        <img class="img-fluid rounded shadow-sm"
+          src="{{ url_for('static', filename='images/how-to/overview/Figure_DietRx_Overview_VIdeo_1.png') }}"
+          alt="Overview 1">
+
+      </div>
+
+    </div>
+
+    <div id="search" class="container pt-4">
+
+      <hr />
+      <h5 class="container">
+        <span>
+          <img src="/static/images/search_logo.png" class="d-inline-block align-top"
+            style="max-width: 1em; max-height: 1em;">
+        </span>
+        <strong>&nbsp;&nbsp;Search</strong>
+      </h5>
+      <hr />
+
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#entity-name-search" role="tab"
+            aria-controls="entity-name-search" aria-selected="true">Entity Identifier Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#chemical-advanced-search" role="tab"
+            aria-controls="chemical-advanced-search" aria-selected="false">Chemical Advanced Search</a>
+        </li>
+      </ul>
+
+      <div class="tab-content pt-4 ml-2 mr-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="entity-name-search" role="tabpanel" aria-labelledby="home-tab">
+          {% include 'food/food_search.html' %}
+          {% include 'disease/disease_search.html' %}
+          {% include 'gene/gene_search.html' %}
+          {% include 'chemical/chemical_search.html' %}
+        </div>
+        <div class="tab-pane fade" id="chemical-advanced-search" role="tabpanel" aria-labelledby="profile-tab">
+          {% include 'chemical/chemical_advanced_search.html' %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Analytics section -->
+  <div class="container" id="analytics">
+    <h2>DietRx Analytics</h2>
+    <!-- <div class="btn-group mb-4" role="group" aria-label="Analytics Graphs">
+      <button id="btn-top50-foods" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-top50-foods', this)">Top 50 Foods by Chemical Count</button>
+      <button id="btn-top-foods-syn" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-top-foods-syn', this)">Top 20 Foods by Synonyms</button>
+      <button id="btn-top-diseases-paths" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-top-diseases-paths', this)">Top Diseases by Chemical-Gene Pathways</button> -->
+
+    <!-- ✅ Add these buttons for CSV-driven charts -->
+    <div class="btn-group mb-4 d-flex justify-content-center flex-wrap" role="group" aria-label="Analytics Graphs">
+
+      <button id="btn-plant" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-plant', this)">Plant</button>
+      <button id="btn-plantder" class="btn btn-primary btn-analytics" onclick="showGraph('chart-plantder', this)">Plant
+        Derivative</button>
+      <button id="btn-alcoholicbev" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-alcoholicbev', this)">Alcoholic Beverages</button>
+      <button id="btn-dairy" class="btn btn-primary btn-analytics"
+        onclick="showGraph('chart-dairy', this)">Dairy</button>
+      <button id="btn-meategg" class="btn btn-primary btn-analytics" onclick="showGraph('chart-meategg', this)">Meat &
+        Eggs</button>
+
+    </div>
+
+
+    <!-- </div>
+  <div class="section" id="section-top50-foods" style="display: block;">
+    <div id="chart-top50-foods" style="height:600px;"></div>
+  </div>
+  <div class="section" id="section-top-foods-syn" style="display: none;">
+    <div id="chart-top-foods-syn" style="height:600px;"></div>
+  </div>
+  <div class="section" id="section-top-diseases-paths" style="display: none;">
+    <div id="chart-top-diseases-paths" style="height:600px;"></div>
+  </div>
+</div> -->
+
+    <!-- new analytics section -->
+    <div class="container">
+      <div class="section" id="section-alcoholicbev" style="display:none;">
+        <div id="chart-alcoholicbev" style="height:600px;"></div>
+      </div>
+
+      <div class="section" id="section-dairy" style="display:none;">
+        <div id="chart-dairy" style="height:600px;"></div>
+      </div>
+
+      <div class="section" id="section-meategg" style="display:none;">
+        <div id="chart-meategg" style="height:600px;"></div>
+      </div>
+
+      <div class="section" id="section-plant" style="display:none;">
+        <div id="chart-plant" style="height:600px;"></div>
+      </div>
+
+      <div class="section" id="section-plantder" style="display:none;">
+        <div id="chart-plantder" style="height:600px;"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    function showGraph(graphId, btn) {
+      $('.section').hide();
+      $('.btn-analytics').removeClass('btn-analytics-active');
+      if (btn) $(btn).addClass('btn-analytics-active');
+
+      // map each chart container → [CSV‐slug, section‐div, human title]
+      const mapping = {
+        'chart-alcoholicbev': ['alcoholicbev', 'section-alcoholicbev', 'Alcoholic Beverages'],
+        'chart-dairy': ['dairy', 'section-dairy', 'Dairy'],
+        'chart-meategg': ['meategg', 'section-meategg', 'Meat & Eggs'],
+        'chart-plant': ['plant', 'section-plant', 'Plant'],
+        'chart-plantder': ['plantder', 'section-plantder', 'Plant Derivative']
+      };
+      if (mapping[graphId]) {
+        const [slug, sectionId, title] = mapping[graphId];
+        $(`#${sectionId}`).fadeIn(300);
+        drawCSVBar(slug, graphId, `Top 50 ${title} by Positive vs Negative`);
+        return;
+      }
+
+
+    }
+    $(document).ready(function () {
+      // … existing init …
+      $('#btn-alcoholicbev').addClass('btn-analytics-active');
+      showGraph('chart-alcoholicbev');
+    });
+    function drawBar(endpoint, elementId, labelKey, valueKey, title, xLabel) {
+      fetch(endpoint)
+        .then(r => r.json())
+        .then(data => {
+          if (!data.length) {
+            document.getElementById(elementId).innerHTML = '<p>No data.</p>';
+            return;
+          }
+          Plotly.newPlot(elementId, [{
+            x: data.map(d => d[labelKey]),
+            y: data.map(d => d[valueKey]),
+            type: 'bar',
+            hovertemplate: '<b>%{x}</b><br>Value: %{y}<extra></extra>',
+            marker: {
+              color: '#207872',
+              opacity: 0.8,
+              line: { color: 'rgba(0, 0, 0, 0.2)', width: 1 }
+            }
+          }], {
+            title: title,
+            margin: { t: 40, b: 150 },
+            xaxis: { tickangle: -45, title: xLabel },
+            plot_bgcolor: '#f9f9f9',
+            paper_bgcolor: '#f9f9f9',
+            height: 600
+          });
+        });
+
+    }
+
+    function drawCSVBar(slug, elementId, title) {
+      fetch(`/api/analytics/top50_csv/${slug}`)
+        .then(r => r.json())
+        .then(data => {
+          if (!data.length) {
+            document.getElementById(elementId).innerHTML = '<p>No data available.</p>';
+            return;
+          }
+
+          // ✅ Sort descending by positive_count
+          data.sort((a, b) => b.positive_count - a.positive_count);
+
+          const y = data.map(d => d.display_name);
+          const pos = data.map(d => d.positive_count);
+          const neg = data.map(d => d.negative_count);
+
+          Plotly.newPlot(elementId, [
+            {
+              y: y,
+              x: pos,
+              name: 'Positive',
+              type: 'bar',
+              orientation: 'h',
+              marker: { color: '#28a745' }
+            },
+            {
+              y: y,
+              x: neg,
+              name: 'Negative',
+              type: 'bar',
+              orientation: 'h',
+              marker: { color: '#dc3545' }
+            }
+          ], {
+            title: title,
+            barmode: 'stack',
+            xaxis: {
+              title: {
+                text: 'Number of Publications',
+                font: { size: 16, color: '#207872' }
+              },
+              tickfont: { color: '#207872' },
+              gridcolor: '#d6f2ef'
+            },
+            yaxis: {
+              title: {
+                text: 'Food',
+                font: { size: 16, color: '#207872' }
+              },
+              tickfont: { color: '#207872' },
+              automargin: true
+            },
+            plot_bgcolor: '#f0ffe0',
+            paper_bgcolor: '#f0ffe0',
+            height: 700,
+            margin: { l: 200, t: 50, r: 50 }
+          });
+        });
+    }
+
+
+    // drawBar('/api/analytics/top50_foods_by_chemicals', 'chart-top50-foods', 'display_name', 'chemical_count', 'Top 50 Foods by Chemical Count', 'Food');
+    // drawBar('/api/analytics/top20_foods_by_synonyms', 'chart-top-foods-syn', 'display_name', 'syn_count', 'Top 20 Foods by Synonyms', 'Food');
+    // drawBar('/api/analytics/top_diseases_by_paths', 'chart-top-diseases-paths', 'disease_name', 'chemical_gene_links', 'Top Diseases by Chemical-Gene Pathways', 'Disease');
+  </script>
+  {% endblock %}

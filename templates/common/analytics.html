@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>DietRx Advanced Analytics</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 40px;
+      font-size: 2em;
+      text-align: center;
+      padding-top: 30px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h4 {
+      margin-bottom: 20px;
+      font-size: 1.4em;
+      color: #3498db;
+      text-align: center;
+    }
+
+    .section p {
+      color: #666;
+      font-size: 1.1em;
+    }
+
+    #chart-top-foods-chem,
+    #chart-top-foods-syn,
+    #chart-top50-foods,
+    #chart-top-diseases-paths {
+      border-radius: 10px;
+    }
+
+    .embed-responsive {
+      margin-bottom: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background-color: #3498db;
+      color: white;
+      text-align: center;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      iframe {
+        height: 350px;
+      }
+
+      .section h4 {
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>DietRx Advanced Analytics</h2>
+
+    <!-- 3. Top 50 Foods by Chemical Count -->
+    <div class="section">
+      <h4>Top 50 Foods by Chemical Count</h4>
+      <div id="chart-top50-foods" style="height:800px;"></div>
+    </div>
+
+    <!-- 2. Top 20 Foods by Number of Synonyms -->
+    <div class="section">
+      <h4>Top 20 Foods by Number of Synonyms</h4>
+      <div id="chart-top-foods-syn" style="height:400px;"></div>
+    </div>
+
+    <!-- 4. Top Diseases by Chemical-Gene Pathways -->
+    <div class="section">
+      <h4>Top Diseases by Chemical-Gene Pathways</h4>
+      <div id="chart-top-diseases-paths" style="height:600px;"></div>
+    </div>
+
+  </div>
+
+  <script>
+    function drawBar(endpoint, elementId, labelKey, valueKey, title, xLabel) {
+      fetch(endpoint)
+        .then(r => r.json())
+        .then(data => {
+          if (!data.length) {
+            document.getElementById(elementId).innerHTML = '<p>No data.</p>';
+            return;
+          }
+
+          Plotly.newPlot(elementId, [{
+            x: data.map(d => d[labelKey]),
+            y: data.map(d => d[valueKey]),
+            type: 'bar',
+            hovertemplate: '<b>%{x}</b><br>Value: %{y}<extra></extra>',
+            marker: {
+              color: '#207872',  // Teal-like color
+              opacity: 0.8,
+              line: {
+                color: 'rgba(0, 0, 0, 0.2)',  // Border for bars
+                width: 1
+              }
+            }
+          }], {
+            title: title,
+            margin: { t: 40, b: 150 },
+            xaxis: { tickangle: -45, title: xLabel },
+            plot_bgcolor: '#f9f9f9',  // Lighter background
+            paper_bgcolor: '#f9f9f9',
+          });
+        });
+    }
+
+    drawBar('/api/analytics/top10_foods_by_chemicals', 'chart-top-foods-chem', 'display_name', 'chemical_count', 'Top 10 Foods by Chemical Content', 'Food');
+    drawBar('/api/analytics/top20_foods_by_synonyms', 'chart-top-foods-syn', 'display_name', 'syn_count', 'Top 20 Foods by Synonyms', 'Food');
+    drawBar('/api/analytics/top50_foods_by_chemicals', 'chart-top50-foods', 'display_name', 'chemical_count', 'Top 50 Foods by Chemical Count', 'Food');
+    drawBar('/api/analytics/top_diseases_by_paths', 'chart-top-diseases-paths', 'disease_name', 'chemical_gene_links', 'Top Diseases by Chemical-Gene Pathways', 'Disease');
+  </script>
+
+</body>
+
+</html>

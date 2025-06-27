@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='images/logo.png')}}">
+  <title>DietRx</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+    integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+  <!-- jQuery UI CSS (updated with correct CDN link) -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+    integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+    crossorigin="anonymous"></script>
+
+  <!-- datatables link-->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css" />
+
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="application/javascript" src="{{ url_for('static', filename='Jmol/Jmol.js') }}"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css" />
+  <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+  <script type="text/javascript" language="javascript"
+    src="//cdn.datatables.net/plug-ins/1.10.18/dataRender/ellipsis.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102869016-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-102869016-3');
+  </script>
+
+  <script>
+    jQuery(window).load(function () {
+      // will first fade out the loading animation
+      jQuery("#status").fadeOut();
+      // will fade out the whole DIV that covers the website.
+      jQuery("#preloader").delay(1000).fadeOut("slow");
+    })
+  </script>
+  <style>
+    /* Preloader styles */
+
+    #preloader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #fefefe;
+      z-index: 99;
+      height: 100%;
+    }
+
+    #status {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background-image: url(https://cdn-images-1.medium.com/max/1600/0*cWpsf9D3g346Va20.gif);
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: -100px 0 0 -100px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #ffffff;
+    }
+
+    .btn-analytics {
+      background-color: #8e8e8e !important;
+      /* Inactive background */
+      color: #333 !important;
+      /* Inactive text */
+      border-color: #bdbdbd !important;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-analytics-active {
+      background-color: #1f7872 !important;
+      color: #fff !important;
+      border-color: #000000 !important;
+    }
+
+    /* nav bar style */
+    body {
+      font-family: "Century Gothic", 'Lato', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .et-hero-tabs,
+    .et-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 50vh;
+      position: relative;
+      background: #eee;
+      text-align: center;
+      padding: 0 2em;
+    }
+
+    .et-hero-tabs h1 {
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: 0.4rem;
+    }
+
+    .et-hero-tabs h3 {
+      font-size: 1rem;
+      letter-spacing: 0.1rem;
+      opacity: 0.6;
+    }
+
+    .et-hero-tabs-container {
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      z-index: 10;
+    }
+
+    .et-hero-tabs-container--top {
+      position: fixed;
+      top: 0;
+    }
+
+    .et-hero-tab {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      color: #000;
+      letter-spacing: 0.05rem;
+      transition: all 0.5s ease;
+      font-size: 0.9rem;
+      padding: 0.5em;
+    }
+
+    .et-hero-tab:hover {
+      color: white;
+      background: rgba(32, 120, 114, 0.85);
+    }
+
+    .et-hero-tab-slider {
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 4px;
+      background: #207872;
+      transition: left 0.3s ease;
+    }
+
+    @media (min-width: 800px) {
+      .et-hero-tabs h1 {
+        font-size: 2.5rem;
+      }
+
+      .et-hero-tabs h3 {
+        font-size: 1.1rem;
+      }
+
+      .et-hero-tab {
+        font-size: 1rem;
+      }
+    }
+
+    .et-hero-tabs h1 img {
+      height: 1.5em;
+      margin-right: 0.4em;
+      vertical-align: middle;
+    }
+
+    .dietrx-hero-logo {
+      text-align: center;
+      margin-top: -10em;
+    }
+
+    .dietrx-hero-logo img {
+      max-height: 300px;
+      height: auto;
+      width: auto;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+      color: #555;
+      margin-top: -3em;
+      /* reduced from 1.5em */
+    }
+  </style>
+  {% block extra_head %}
+  {% endblock %}
+</head>
+
+<body>
+  <div id="preloader">
+
+    <div id="status">&nbsp;</div>
+
+  </div>
+  <script type="text/javascript">
+    function table_overflow() {
+      $('.table_overflow').css('max-height', '500px')
+      $('.table_overflow').css('overflow', 'auto')
+    }
+  </script>
+  <script>
+    // Sticky Navigation for Hero Tabs
+    class StickyNavigation {
+      onstructor() {
+        this.currentId = null;
+        this.currentTab = null;
+        this.tabContainerHeight = $('.et-hero-tabs-container').outerHeight(); // dynamically get height
+        let self = this;
+        $('.et-hero-tab').click(function (event) {
+          var href = $(this).attr('href');
+          if (href.startsWith('#')) {
+            self.onTabClick(event, $(this));
+          }
+        });
+        $(window).scroll(() => { this.onScroll(); });
+        $(window).resize(() => {
+          this.tabContainerHeight = $('.et-hero-tabs-container').outerHeight(); // recalculate on resize
+          this.onResize();
+        });
+      }
+
+      onTabClick(event, element) {
+        event.preventDefault();
+        let scrollTop = $(element.attr('href')).offset().top - this.tabContainerHeight;
+        $('html, body').animate({ scrollTop: scrollTop }, 600);
+      }
+
+      onScroll() {
+        this.checkTabContainerPosition();
+        this.findCurrentTabSelector();
+      }
+
+      onResize() {
+        if (this.currentId) {
+          this.setSliderCss();
+        }
+      }
+
+      checkTabContainerPosition() {
+        let offset = $('.et-hero-tabs').offset().top + $('.et-hero-tabs').height() - this.tabContainerHeight;
+        if ($(window).scrollTop() > offset) {
+          $('.et-hero-tabs-container').addClass('et-hero-tabs-container--top');
+        } else {
+          $('.et-hero-tabs-container').removeClass('et-hero-tabs-container--top');
+        }
+      }
+
+      findCurrentTabSelector() {
+        let newCurrentId;
+        let newCurrentTab;
+        let self = this;
+        $('.et-hero-tab').each(function () {
+          let id = $(this).attr('href');
+          let offsetTop = $(id).offset().top - self.tabContainerHeight;
+          let offsetBottom = $(id).offset().top + $(id).height() - self.tabContainerHeight;
+          if ($(window).scrollTop() > offsetTop && $(window).scrollTop() < offsetBottom) {
+            newCurrentId = id;
+            newCurrentTab = $(this);
+          }
+        });
+        if (this.currentId !== newCurrentId || this.currentId === null) {
+          this.currentId = newCurrentId;
+          this.currentTab = newCurrentTab;
+          this.setSliderCss();
+        }
+      }
+
+      setSliderCss() {
+        let width = 0;
+        let left = 0;
+        if (this.currentTab) {
+          width = this.currentTab.outerWidth();
+          left = this.currentTab.offset().left;
+        }
+        $('.et-hero-tab-slider').css('width', width);
+        $('.et-hero-tab-slider').css('left', left);
+      }
+    }
+
+    $(document).ready(function () {
+      new StickyNavigation();
+    });
+  </script>
+
+
+  <!-- Hero Tabs Navigation -->
+  <section class="et-hero-tabs">
+    <div class="dietrx-hero-logo">
+      <img src="{{ url_for('static', filename='images/dietrx_logo2.png') }}" alt="DietRx Logo">
+      <p class="hero-subtitle">Explore Interrelationships Among Foods, Diseases, Genes and Chemicals</p>
+    </div>
+
+
+
+
+    <div class="et-hero-tabs-container">
+      <a class="et-hero-tab" href="{{ url_for('index') }}">Home</a>
+      <a class="et-hero-tab" href="{{ url_for('index') }}#search">Search</a>
+      <a class="et-hero-tab" href="{{ url_for('index') }}#analytics">Analytics</a>
+      <a class="et-hero-tab" href="{{ url_for('how_to_use') }}">How To Use</a>
+      <a class="et-hero-tab" href="{{ url_for('faq') }}">FAQs</a>
+      <a class="et-hero-tab" href="{{ url_for('contact_us') }}">Contact Us</a>
+      <a class="et-hero-tab" href="http://cosylab.iiitd.edu.in" target="_blank">CoSyLab</a>
+      <span class="et-hero-tab-slider"></span>
+
+    </div>
+  </section>
+
+
+
+  {% block body %}
+
+  {% endblock %}
+
+
+  <footer class="primary-footer">
+    <div class="copyright-wrap">
+      <div class="panel">
+        <div class="content">
+          <p><img alt="" src="{{url_for('static', filename='images/iiitd.png')}}"></p>
+          <P>Copyright &copy; 2025 &nbsp All rights reserved.<br><br>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img
+                alt="Creative Commons License" style="border-width:0"
+                src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is
+            licensed under a <a style="font-weight: bold;" rel="license"
+              href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons
+              Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+          </P>
+          <p style="text-align: center;">All material on this website is a product of research and is provided
+            for your information only and may not be construed as medical advice or instruction. <br> No
+            action or inaction should be taken based solely on the contents of this information; instead,
+            readers should consult appropriate health professionals on any matter relating to their health
+            and well-being.</p>
+          <p><a href="https://iiitd.ac.in/" target="_blank"><strong>Indraprastha Institute of Information
+                Technology Delhi (IIIT-Delhi)</strong></a> | <a href="http://faculty.iiitd.ac.in/~bagler/"
+              target="_blank">Dr. Ganesh Bagler</a></p>
+          <p><a target="_blank" href="https://www.facebook.com/ganesh.bagler"><img
+                src="{{url_for('static', filename='images/facebook.png')}}" alt="facebook" /></a>
+            <a target="_blank" href="https://twitter.com/gansbags"><img
+                src="{{url_for('static', filename='images/twwtter.png')}}" alt="tiwwter" /></a>
+            <a target="_blank" href="https://www.linkedin.com/in/ganeshbagler"><img
+                src="{{url_for('static', filename='images/linkedin.png')}}" alt="linkedin'" /></a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <style type="text/css">
+    .primary-footer {
+      left: 0;
+      right: 0;
+      background: #1f7872;
+      position: absolute;
+      margin-top: 10em;
+      box-sizing: border-box;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .copyright-wrap {
+      width: 100%;
+      background: #1f7872;
+      padding: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .copyright-wrap .panel {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+
+    .copyright-wrap .panel .content {
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+      padding: 0 1rem;
+      margin: 0 auto;
+    }
+
+    .primary-footer a {
+      color: #f2fdfb;
+      /* pale white-blue */
+      text-decoration: none;
+    }
+
+    .primary-footer a:hover {
+      color: #ffffff;
+      /* bright white on hover */
+      text-decoration: underline;
+    }
+  </style>
+
+
+
+
+</body>
+
+</html>

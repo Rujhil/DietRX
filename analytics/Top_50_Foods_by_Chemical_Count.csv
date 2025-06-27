@@ -1,0 +1,51 @@
+,food_id,chemical_count,display_name,common_names,scientific_name,food_category,tax_id
+0,PlantDer ID: 3,581,Teosinte oil,teosinte oil; san Antonio Huista teosinte oil; balsas teosinte oil; corn oil; mexican teosinte oil; maize oil; indian corn oil; annual teosinte oil,Zea mays,Plant Derivative,4577.0
+1,PlantDer ID: 122,581,Teosinte seed,teosinte seed; san Antonio Huista teosinte seed; balsas teosinte seed; corn seed; mexican teosinte seed; maize seed; indian corn seed; annual teosinte seed,Zea mays,Plant Derivative,4577.0
+2,Plant ID:4577,581,Teosinte,teosinte; san Antonio Huista teosinte; balsas teosinte; corn; mexican teosinte; maize; indian corn; annual teosinte,Zea mays,Cereal,4577.0
+3,Plant ID:4113,565,Potatoes,potatoes; potato,Solanum tuberosum,Vegetable-Tuber,4113.0
+4,Plant ID:4072,500,Sweet pepper,sweet pepper; red pepper; pimento; chilli pepper; chilipiquin; chiltepe; american bird pepper,Capsicum annuum,Vegetable-Fruit,4072.0
+5,PlantDer ID: 75,480,Soybean tea,soybean tea; soybeans tea,Glycine max,Plant Derivative,3847.0
+6,Plant ID:3847,480,Soybean,soybean; soybeans,Glycine max,Nuts & Seeds,3847.0
+7,PlantDer ID: 32,480,Soybean oil,soybean oil; soybeans oil,Glycine max,Plant Derivative,3847.0
+8,PlantDer ID: 31,480,Soybean seed,soybean seed; soybeans seed,Glycine max,Plant Derivative,3847.0
+9,Plant ID:2711,469,Apfelsine,apfelsine; naranja; navel orange; valencia orange; sweet orange,Citrus sinensis,Fruit,2711.0
+10,PlantDer ID: 110,438,Wine grape seed,wine grape seed,Vitis vinifera,Plant Derivative,29760.0
+11,Plant ID:29760,438,Wine grape,wine grape,Vitis vinifera,Fruit,29760.0
+12,Plant ID:4045,413,Chinese celery,chinese celery; celeriac; leaf celery; celery; stalk celery; celery knob,Apium graveolens,Vegetable-Leaf,4045.0
+13,PlantDer ID: 107,413,Chinese celery seed,chinese celery seed; celeriac seed; leaf celery seed; celery seed; stalk celery seed; celery knob seed,Apium graveolens,Plant Derivative,4045.0
+14,PlantDer ID: 216,413,Chinese celery oil,chinese celery oil; celeriac oil; leaf celery oil; celery oil; stalk celery oil; celery knob oil,Apium graveolens,Plant Derivative,4045.0
+15,PlantDer ID: 19,402,Ginger oil,ginger oil,Zingiber officinale,Plant Derivative,94328.0
+16,Plant ID:94328,402,Ginger,ginger,Zingiber officinale,Herbs and Spices,94328.0
+17,PlantDer ID: 2,402,Ginger tea,ginger tea,Zingiber officinale,Plant Derivative,94328.0
+18,PlantDer ID: 0,376,Garlic oil,garlic oil,Allium sativum,Plant Derivative,4682.0
+19,Plant ID:4682,376,Garlic,garlic,Allium sativum,Herbs and Spices,4682.0
+20,Plant ID:2708,364,Lemon,lemon,Citrus limon,Fruit,2708.0
+21,PlantDer ID: 70,364,Lemon oil,lemon oil,Citrus limon,Plant Derivative,2708.0
+22,Plant ID:3888,361,Sugar pea,sugar pea; pea; peas; syrian fodder pea; garden pea; snow pea; wild pea,Pisum sativum,Legume,3888.0
+23,PlantDer ID: 6,361,Sugar pea seed,sugar pea seed; pea seed; peas seed; syrian fodder pea seed; garden pea seed; snow pea seed; wild pea seed,Pisum sativum,Plant Derivative,3888.0
+24,PlantDer ID: 228,349,Common sunflower oil,common sunflower oil,Helianthus annuus,Plant Derivative,4232.0
+25,PlantDer ID: 231,349,Common sunflower seed,common sunflower seed,Helianthus annuus,Plant Derivative,4232.0
+26,Plant ID:4232,349,Common sunflower,common sunflower,Helianthus annuus,Plant Derivative,4232.0
+27,PlantDer ID: 189,338,Dill seed,dill seed,Anethum graveolens,Plant Derivative,40922.0
+28,Plant ID:40922,338,Dill,dill,Anethum graveolens,Herbs and Spices,40922.0
+29,Plant ID:29719,336,Spearmint,spearmint,Mentha spicata,Herbs and Spices,29719.0
+30,PlantDer ID: 147,336,Spearmint oil,spearmint oil,Mentha spicata,Plant Derivative,29719.0
+31,PlantDer ID: 201,336,Spearmint tea,spearmint tea,Mentha spicata,Plant Derivative,29719.0
+32,Plant ID:3885,330,Kidney bean,kidney bean; string bean; french bean,Phaseolus vulgaris,Legume,3885.0
+33,PlantDer ID: 18,323,Rosemary oil,rosemary oil,Salvia rosmarinus,Plant Derivative,39367.0
+34,Plant ID:39367,323,Rosemary,rosemary,Salvia rosmarinus,Herbs and Spices,39367.0
+35,Plant ID:13216,316,Piper nigrum,,Piper nigrum,Herbs and Spices,13216.0
+36,Plant ID:39350,313,Sweet basil,sweet basil; basil,Ocimum basilicum,Herbs and Spices,39350.0
+37,PlantDer ID: 224,313,Sweet basil oil,sweet basil oil; basil oil,Ocimum basilicum,Plant Derivative,39350.0
+38,PlantDer ID: 21,309,Two rowed barley oil,two rowed barley oil; domesticated barley oil; barley oil; wild barley oil,Hordeum vulgare,Plant Derivative,4513.0
+39,PlantDer ID: 40,309,Two rowed barley seed,two rowed barley seed; domesticated barley seed; barley seed; wild barley seed,Hordeum vulgare,Plant Derivative,4513.0
+40,Plant ID:4513,309,Two rowed barley,two rowed barley; domesticated barley; barley; wild barley,Hordeum vulgare,Cereal,4513.0
+41,Plant ID:4081,306,Tomato,tomato; cherry tomato,Solanum lycopersicum,Vegetable-Fruit,4081.0
+42,PlantDer ID: 68,306,Tomato seed,tomato seed; cherry tomato seed,Solanum lycopersicum,Plant Derivative,4081.0
+43,Plant ID:4043,305,Italian parsley,italian parsley; turnip root parsley; hamburg parsley; parsley,Petroselinum crispum,Herbs and Spices,4043.0
+44,Plant ID:3659,287,Nepalese cucumber,nepalese cucumber; xi nan ye huang gua; sikkim cucumber; cucumber; cucumbers,Cucumis sativus,Vegetable-Gourd,3659.0
+45,PlantDer ID: 157,287,Nepalese cucumber seed,nepalese cucumber seed; xi nan ye huang gua seed; sikkim cucumber seed; cucumber seed; cucumbers seed,Cucumis sativus,Plant Derivative,3659.0
+46,PlantDer ID: 129,284,Onion oil,onion oil; shallot oil,Allium cepa,Plant Derivative,4679.0
+47,Plant ID:4679,284,Onion,onion; shallot,Allium cepa,Vegetable-Bulb,4679.0
+48,Plant ID:120290,283,Guava,guava,Psidium guajava,Fruit,120290.0
+49,PlantDer ID: 9,283,Guava tea,guava tea,Psidium guajava,Plant Derivative,120290.0
