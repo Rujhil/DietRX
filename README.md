@@ -58,7 +58,7 @@ DietRx/
 **1. Create and activate virtual environment**
 ```bash
 python -m venv env
-.\env\Scripts ctivate
+.\env\Scripts\activate   
 ```
 
 **2. Install Python dependencies**
