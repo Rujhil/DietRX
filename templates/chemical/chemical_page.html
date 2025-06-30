@@ -28,7 +28,7 @@
 				<tr>
 					<th scope="row" class="text-danger">PubChem CID</th>
 					<td style="word-break: break-all;">
-						<a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{{ chemical.pubchem_id }}">{{
+						<a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{ chemical.pubchem_id }}">{{
 							chemical.pubchem_id }}
 							<i class="fas fa-external-link-alt" style="vertical-align: top; font-size: 12px;"></i>
 						</a>
@@ -63,8 +63,8 @@
 				<button id="view_jsmol" class="btn btn-primary" role="button" style="width: 100%; margin-top: 1em;">View
 					JSmol</button>
 			</div>
-			<a target="_blank" href="{{ url_for('chemical_search', smiles=chemical.smiles)}}"
-				class="btn btn-primary mt-1" role="button" style="width: 100%;">Search Similar in DietRx</a>
+			<a href="{{ url_for('chemical_search', smiles=chemical.smiles)}}" class="btn btn-primary mt-1" role="button"
+				style="width: 100%;">Search Similar in DietRx</a>
 		</div>
 	</div>
 
@@ -134,8 +134,8 @@
 					</table>
 					<div>
 						<p class="text-muted"> Details of Molecular Properties were obtained using <a
-								href='https://academic.oup.com/bioinformatics/article/29/8/1092/233093'
-								target="_blank">ChemoPy</a> Python package.
+								href='https://academic.oup.com/bioinformatics/article/29/8/1092/233093'>ChemoPy</a>
+							Python package.
 						</p>
 					</div>
 				</div>

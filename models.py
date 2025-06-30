@@ -8,7 +8,6 @@ class SearchableMixin(object):
             add_to_index(cls.__tablename__, obj, id)
 
 
-
 class Food(SearchableMixin, db.Model):
     __searchable__ = ['display_name', 'common_names', 'scientific_name', 'food_category']
     __searchboost__ = ['display_name^4', 'common_names', 'scientific_name', 'food_category^3']
@@ -19,12 +18,11 @@ class Food(SearchableMixin, db.Model):
     scientific_name = db.Column(db.Text)
     food_category = db.Column(db.String(128))
     tax_id = db.Column(db.Integer)
-    genes = db.relationship("Gene", secondary="food_gene")
-    diseases = db.relationship("Disease", secondary="food_disease")
+    genes = db.relationship("Gene", secondary="food_gene", overlaps="food_gene,foods")
+    diseases = db.relationship("Disease", secondary="food_disease", overlaps="food_disease,foods")
 
     def __repr__(self):
         return '<Food {}>'.format(self.display_name)
-
 
 
 class Disease(SearchableMixin, db.Model):
@@ -35,8 +33,8 @@ class Disease(SearchableMixin, db.Model):
     disease_name = db.Column(db.Text)
     disease_synonyms = db.Column(db.Text)
     disease_category = db.Column(db.Text)
-    genes = db.relationship("Gene", secondary="disease_gene")
-    foods = db.relationship("Food", secondary="food_disease")
+    genes = db.relationship("Gene", secondary="disease_gene", overlaps="disease_gene,diseases")
+    foods = db.relationship("Food", secondary="food_disease", overlaps="food_disease,diseases")
 
     def __repr__(self):
         return '<Disease {}>'.format(self.disease_name)
@@ -52,8 +50,8 @@ class Gene(SearchableMixin, db.Model):
     organism = db.Column(db.Text)
     other_symbols = db.Column(db.Text)
     synonyms = db.Column(db.Text)
-    diseases = db.relationship('Disease', secondary='disease_gene')
-    foods = db.relationship('Food', secondary='food_gene')
+    diseases = db.relationship('Disease', secondary='disease_gene', overlaps="disease_gene,genes")
+    foods = db.relationship('Food', secondary='food_gene', overlaps="food_gene,genes")
 
     def __repr__(self):
         return '<Gene {}>'.format(self.gene_id)
@@ -64,8 +62,8 @@ class Chemical(SearchableMixin, db.Model):
     __autocomplete__ = ['common_name', 'synonyms']
     __searchboost__ = ['common_name^3', 'iupac_name', 'synonyms^2']
     __separators__ = {'synonyms': '|'}
-    diseases = db.relationship("Disease", secondary="chemical_disease")
-    foods = db.relationship("Food", secondary="food_chemical")
+    diseases = db.relationship("Disease", secondary="chemical_disease", overlaps="chemical_disease,chemicals")
+    foods = db.relationship("Food", secondary="food_chemical", overlaps="food_chemical,chemicals")
 
     pubchem_id = db.Column(db.Integer, primary_key=True)
     common_name = db.Column(db.Text, nullable=True, index=True)
@@ -77,19 +75,16 @@ class Chemical(SearchableMixin, db.Model):
     functional_group_idx = db.Column(db.Text, nullable=True, index=True)
     smiles = db.Column(db.Text, index=False)
     isomeric_smiles = db.Column(db.Text, index=False)
-    molecular_weight = db.Column(db.Float, index=False,
-                                 nullable=True)
+    molecular_weight = db.Column(db.Float, index=False, nullable=True)
     num_hydrogen_atoms = db.Column(db.Integer, index=False, nullable=True)
     num_heavy_atoms = db.Column(db.Integer, index=False, nullable=True)
     num_rings = db.Column(db.Integer, index=False, nullable=True)
     num_rotatablebonds = db.Column(db.Integer, index=False, nullable=True)
-    number_of_aromatic_bonds = db.Column(db.Integer, index=False,
-                                         nullable=True)
+    number_of_aromatic_bonds = db.Column(db.Integer, index=False, nullable=True)
     num_atoms = db.Column(db.Integer, index=False, nullable=True)
     hba_count = db.Column(db.Integer, index=False, nullable=True)
     hbd_count = db.Column(db.Integer, index=False, nullable=True)
-    hyrophilic_index = db.Column(db.Float, index=False,
-                                 nullable=True)
+    hyrophilic_index = db.Column(db.Float, index=False, nullable=True)
     alogp = db.Column(db.Float, index=False, nullable=True)
 
     def __repr__(self):
@@ -103,8 +98,8 @@ class Food_disease(db.Model):
     negative_pmid = db.Column(db.String(512), index=False)
     pubchem_id = db.Column(db.String(512), index=False)
     weight = db.Column(db.Integer, index=True)
-    food = db.relationship("Food", backref=db.backref('food_disease'))
-    disease = db.relationship("Disease", backref=db.backref('food_disease'))
+    food = db.relationship("Food", backref=db.backref('food_disease'), overlaps="diseases,foods")
+    disease = db.relationship("Disease", backref=db.backref('food_disease'), overlaps="diseases,foods")
 
     def __repr__(self):
         return '<Food Disease {} {}>'.format(self.food_id, self.disease_id)
@@ -115,8 +110,8 @@ class Disease_gene(db.Model):
     disease_id = db.Column(db.String(128), db.ForeignKey('disease.disease_id'), primary_key=True)
     reference = db.Column(db.String(100))
     via_chemicals = db.Column(db.String(512), index=False)
-    disease = db.relationship("Disease", backref=db.backref('disease_gene'))
-    gene = db.relationship("Gene", backref=db.backref('disease_gene'))
+    disease = db.relationship("Disease", backref=db.backref('disease_gene'), overlaps="genes,diseases")
+    gene = db.relationship("Gene", backref=db.backref('disease_gene'), overlaps="genes,diseases")
 
     def __repr__(self):
         return '<Disease Gene {}>'.format(self.gene_id)
@@ -127,8 +122,8 @@ class Food_gene(db.Model):
     gene_id = db.Column(db.String(128), db.ForeignKey('gene.gene_id'), primary_key=True)
     via_diseases = db.Column(db.String(512), index=False)
     via_chemicals = db.Column(db.String(512), index=False)
-    food = db.relationship("Food", backref=db.backref('food_gene'))
-    gene = db.relationship("Gene", backref=db.backref('food_gene'))
+    food = db.relationship("Food", backref=db.backref('food_gene'), overlaps="genes,foods")
+    gene = db.relationship("Gene", backref=db.backref('food_gene'), overlaps="genes,foods")
 
     def __repr__(self):
         return '<Food Gene {}>'.format(self.food_id)
@@ -152,41 +147,34 @@ class Chemical_disease(db.Model):
     disease_id = db.Column(db.String(128), db.ForeignKey('disease.disease_id'), primary_key=True)
     type_relation = db.Column(db.String(512))
     via_genes = db.Column(db.String(512), index=False)
-    chemical = db.relationship("Chemical", backref=db.backref('chemical_disease'))
-    disease = db.relationship("Disease", backref=db.backref('chemical_disease'))
+    chemical = db.relationship("Chemical", backref=db.backref('chemical_disease'), overlaps="diseases,chemicals")
+    disease = db.relationship("Disease", backref=db.backref('chemical_disease'), overlaps="diseases,chemicals")
 
     def __repr__(self):
         return '<Chemical Disease {}>'.format(self.pubchem_id)
 
 
 class Chemical_gene(db.Model):
-    pubchem_id = db.Column(db.String(128), db.ForeignKey(
-        'chemical.pubchem_id'), primary_key=True)
-    gene_id = db.Column(db.String(128), db.ForeignKey(
-        'gene.gene_id'), primary_key=True)
+    pubchem_id = db.Column(db.String(128), db.ForeignKey('chemical.pubchem_id'), primary_key=True)
+    gene_id = db.Column(db.String(128), db.ForeignKey('gene.gene_id'), primary_key=True)
     interaction_actions = db.Column(db.Text)
     via_diseases = db.Column(db.String(512), index=False)
-    chemical = db.relationship(
-        "Chemical", backref=db.backref('chemical_gene'))
-    gene = db.relationship(
-        "Gene", backref=db.backref('chemical_gene'))
+    chemical = db.relationship("Chemical", backref=db.backref('chemical_gene'), overlaps="genes,chemicals")
+    gene = db.relationship("Gene", backref=db.backref('chemical_gene'), overlaps="genes,chemicals")
 
     def __repr__(self):
         return '<Chemical Gene {}>'.format(self.pubchem_id)
 
 
 class Food_chemical(db.Model):
-    food_id = db.Column(db.String(128), db.ForeignKey(
-        'food.food_id'), primary_key=True)
-    pubchem_id = db.Column(db.String(128), db.ForeignKey(
-        'chemical.pubchem_id'), primary_key=True)
+    food_id = db.Column(db.String(128), db.ForeignKey('food.food_id'), primary_key=True)
+    pubchem_id = db.Column(db.String(128), db.ForeignKey('chemical.pubchem_id'), primary_key=True)
     content = db.Column(db.Text)
     references = db.Column(db.Text)
     type_relation = db.Column(db.String(100))
     inference_network = db.Column(db.Text)
-    food = db.relationship("Food", backref=db.backref('food_chemical'))
-    chemical = db.relationship(
-        "Chemical", backref=db.backref('food_chemical'))
+    food = db.relationship("Food", backref=db.backref('food_chemical'), overlaps="chemicals,foods")
+    chemical = db.relationship("Chemical", backref=db.backref('food_chemical'), overlaps="chemicals,foods")
 
     def __repr__(self):
         return '<Food Chemical {}>'.format(self.food_id)

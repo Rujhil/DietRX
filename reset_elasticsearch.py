@@ -2,10 +2,10 @@ from core import app
 from models import Food, Disease, Gene, Chemical
 
 with app.app_context():
-    app.elasticsearch.indices.delete(index='food', ignore=[400, 404])
-    app.elasticsearch.indices.delete(index='disease', ignore=[400, 404])
-    app.elasticsearch.indices.delete(index='gene', ignore=[400, 404])
-    app.elasticsearch.indices.delete(index='chemical', ignore=[400, 404])
+    app.elasticsearch.options(ignore_status=[400, 404]).indices.delete(index='food')
+    app.elasticsearch.options(ignore_status=[400, 404]).indices.delete(index='disease')
+    app.elasticsearch.options(ignore_status=[400, 404]).indices.delete(index='gene')
+    app.elasticsearch.options(ignore_status=[400, 404]).indices.delete(index='chemical')
 
     Food.reindex("food_id")
     Disease.reindex("disease_id")

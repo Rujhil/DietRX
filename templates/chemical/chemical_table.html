@@ -11,8 +11,8 @@
         <tbody>
             {% for molecule in result.via_chemicals %}
             <tr>
-                <td><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{{molecule.pubchem_id}}">{{molecule.pubchem_id}}</a></td>
-                <td><a target="_blank" href="{{url_for('get_chemical', pubchem_id=molecule.pubchem_id)}}" class="btn btn-primary btn-sm">{{molecule.common_name or molecule.iupac_name or 'Unknown Name'}}</a></td>
+                <td><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{molecule.pubchem_id}}">{{molecule.pubchem_id}}</a></td>
+                <td><a href="{{url_for('get_chemical', pubchem_id=molecule.pubchem_id)}}" class="btn btn-primary btn-sm">{{molecule.common_name or molecule.iupac_name or 'Unknown Name'}}</a></td>
                 <td>{{molecule.functional_group }}</td>
                 <td>{{molecule.smiles or 'N/A'}}</td>
             </tr>

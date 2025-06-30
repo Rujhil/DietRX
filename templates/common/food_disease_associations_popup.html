@@ -25,8 +25,8 @@
                                 
                                 {% for molecule in result.via_chemicals %}
                                 <tr>
-                                    <td style="white-space:nowrap;"><a target="_blank" href="https://pubchem.ncbi.nlm.nih.gov/compound/{{molecule.pubchem_id}}">{{molecule.pubchem_id}}<i class="fas fa-external-link-alt" style="vertical-align: top; font-size: 12px;"></i></a></td>
-                                    <td><a target="_blank" href="{{url_for('get_chemical', pubchem_id=molecule.pubchem_id)}}">{{molecule.common_name or molecule.iupac_name}}</a></td>
+                                    <td style="white-space:nowrap;"><a href="https://pubchem.ncbi.nlm.nih.gov/compound/{{molecule.pubchem_id}}">{{molecule.pubchem_id}}<i class="fas fa-external-link-alt" style="vertical-align: top; font-size: 12px;"></i></a></td>
+                                    <td><a href="{{url_for('get_chemical', pubchem_id=molecule.pubchem_id)}}">{{molecule.common_name or molecule.iupac_name}}</a></td>
                                     <td>{{molecule.functional_group}}</td>
                                 </tr>
                                 {% else %}
@@ -60,7 +60,7 @@
                             
                             <tr style="background-color: #bfffbf;">
                                 <td style="white-space:nowrap;">
-                                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/{{ association.pmid }}">{{ association.pmid }}<i class="fas fa-external-link-alt" style="vertical-align: top; font-size: 12px;"></i></a>
+                                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ association.pmid }}">{{ association.pmid }}<i class="fas fa-external-link-alt" style="vertical-align: top; font-size: 12px;"></i></a>
                                 </td>
                                 <td data-toggle="tooltip" data-placement="bottom" title="{{ association.title }}">{{ association.title|truncate(40) }}</td>
                                 <td data-toggle="tooltip" data-placement="bottom" title="{{ association.journal_name }}">{{ association.journal_name_abbr }}</td>
@@ -78,7 +78,7 @@
                             
                             <tr style="background-color: #ffbfc5;">
                                 <td>
-                                    <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/{{ association.pmid }}">{{ association.pmid }}</a>
+                                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ association.pmid }}">{{ association.pmid }}</a>
                                 </td>
                                 <td data-toggle="tooltip" data-placement="bottom" title="{{ association.title }}">{{ association.title|truncate(40) }}</td>
                                 <td data-toggle="tooltip" data-placement="bottom" title="{{ association.journal_name }}">{{ association.journal_name_abbr }}</td>
