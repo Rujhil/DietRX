@@ -85,9 +85,7 @@ cd C:\elasticsearch-7.17.13\bin
 .\elasticsearch.bat
 ```
 
->  **Make sure this stays running in one terminal.** Elasticsearch must be active for `reset_elasticsearch.py` to work.
-
----
+**Make sure this stays running in one terminal.** Elasticsearch must be active for `reset_elasticsearch.py` to work.
 
 ##  **Running the Application**
 
