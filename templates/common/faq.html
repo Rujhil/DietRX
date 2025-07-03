@@ -20,7 +20,7 @@
         <div class="card-body">
           <br>
           <div>
-            <img src={{ url_for( 'static' , filename='images/illustrations/overview.jpg' )}} height=450 width=600
+            <img src="{{ url_for('static', filename='images/illustrations/overview.jpg') }}" height="450" width="600"
               style="display: block; margin-left: auto; margin-right: auto; border: LightGray 3px solid;">
           </div>
           <br>DietRx provides a platform for exploring health impacts of dietary ingredients by integrating
@@ -93,11 +93,11 @@
       <div id="5" class="collapse" data-parent="#accordion">
         <div class="card-body">
           DietRx includes data of {{ stats.chems }} chemicals from {{ stats.fc_foods }} foods and were compiled from <a
-            href="http://kanaya.naist.jp/KNApSAcK/">KNApSAcK</a>, <a href="http://phenol-explorer.eu/"
-           >PhenolExlorer</a>,
-          <a href="https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/nutrient-data-laboratory/docs/sr21-home-page/"
-           >USDA</a>, <a href="https://phytochem.nal.usda.gov/phytochem/search"
-           >DUKE</a>, and <a href="http://foodb.ca/">FooDB</a>.
+            href="http://kanaya.naist.jp/KNApSAcK/">KNApSAcK</a>, <a
+            href="http://phenol-explorer.eu/">PhenolExlorer</a>,
+          <a
+            href="https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/nutrient-data-laboratory/docs/sr21-home-page/">USDA</a>,
+          <a href="https://phytochem.nal.usda.gov/phytochem/search">DUKE</a>, and <a href="http://foodb.ca/">FooDB</a>.
           <br>
           <br>
         </div>
@@ -171,10 +171,10 @@
         <div class="card-body">
           The data of food-disease associations was text-mined from biomedical literature. Food-chemical associations
           were curated from
-          <a href="http://kanaya.naist.jp/KNApSAcK/">KNApSAcK</a>, <a href="http://phenol-explorer.eu/"
-           >PhenolExlorer</a>,
-          <a href="https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/nutrient-data-laboratory/docs/sr21-home-page/"
-           >USDA</a>,
+          <a href="http://kanaya.naist.jp/KNApSAcK/">KNApSAcK</a>, <a
+            href="http://phenol-explorer.eu/">PhenolExlorer</a>,
+          <a
+            href="https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/nutrient-data-laboratory/docs/sr21-home-page/">USDA</a>,
           <a href="https://phytochem.nal.usda.gov/phytochem/search">DUKE</a>, and
           <a href="http://foodb.ca/">FooDB</a>. Disease-Chemical and Chemical-Gene associations were
           curated from
@@ -262,304 +262,317 @@
       </div>
     </div>
     <div class="card">
-  <div class="card-header" id="headingNine">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#14" aria-expanded="false">
-        Q14: What browsers are supported by DietRx?
-      </button>
-    </h5>
-  </div>
-  <div id="14" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      A modern web browser with JavaScript enabled.
+      <div class="card-header" id="headingNine">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#14" aria-expanded="false">
+            Q14: What browsers are supported by DietRx?
+          </button>
+        </h5>
+      </div>
+      <div id="14" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          A modern web browser with JavaScript enabled.
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" id="headingTen">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#15" aria-expanded="false">
-        Q15: Does DietRx use cookies?
-      </button>
-    </h5>
-  </div>
-  <div id="15" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      We use cookies to provide the statistics that help us give the best experience for our site.
+    <div class="card">
+      <div class="card-header" id="headingTen">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#15" aria-expanded="false">
+            Q15: Does DietRx use cookies?
+          </button>
+        </h5>
+      </div>
+      <div id="15" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          We use cookies to provide the statistics that help us give the best experience for our site.
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header" id="headingTwelve">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#16" aria-expanded="false">
-        Q16: What is the license under which DietRx is available?
-      </button>
-    </h5>
-  </div>
-  <div id="16" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
-        <img alt="Creative Commons License" style="border-width:0"
-          src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
-      </a>
-      <br />This work is licensed under a
-      <a style="font-weight: bold;" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative
-        Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    <div class="card">
+      <div class="card-header" id="headingTwelve">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#16" aria-expanded="false">
+            Q16: What is the license under which DietRx is available?
+          </button>
+        </h5>
+      </div>
+      <div id="16" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+            <img alt="Creative Commons License" style="border-width:0"
+              src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" />
+          </a>
+          <br />This work is licensed under a
+          <a style="font-weight: bold;" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative
+            Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="card">
-  <div class="card-header" id="headingThirteen">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#17" aria-expanded="false">
-        Q17: General Disclaimer for users of DietRx:
-      </button>
-    </h5>
-  </div>
-  <div id="17" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      All material on this website is a product of research and is provided for your information only and may not be
-      construed as medical advice or instruction. No action or inaction should be taken based solely on the contents of this
-      information; instead, readers should consult appropriate health professionals on any matter relating to their health and
-      well-being.
+    <div class="card">
+      <div class="card-header" id="headingThirteen">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#17" aria-expanded="false">
+            Q17: General Disclaimer for users of DietRx:
+          </button>
+        </h5>
+      </div>
+      <div id="17" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          All material on this website is a product of research and is provided for your information only and may not be
+          construed as medical advice or instruction. No action or inaction should be taken based solely on the contents
+          of this
+          information; instead, readers should consult appropriate health professionals on any matter relating to their
+          health and
+          well-being.
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="card">
-  <div class="card-header" id="headingSeventeen">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#18" aria-expanded="false">
-        Q18: Who is the team behind DietRx?
-      </button>
-    </h5>
-  </div>
-  <div id="18" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      <table class="table table-striped">
-        <thead>
-          <th>Name</th>
-          <th>Position</th>
-          <th>Affiliation</th>
-          <th>Contribution</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a href="{{url_for('contact_us')}}">Ganesh Bagler</a>
-            </td>
-            <td>Project Head</td>
-            <td>Center for Computational Biology, Indraprastha Institute of Information Technology (IIIT-Delhi), New Delhi</td>
-            <td>Idea conception, Project design and management, Database design and implementation </td>
-          </tr>
-          <tr>
-            <td>Rudraksh Tuwani</td>
-            <td>Research Assistant</td>
-            <td>Center for Computational Biology, Indraprastha Institute of Information Technology</td>
-            <td>Data Curation, Database design, Development of DietRx Web Resource, Data Visualisation and Data Analytics</td>
-          </tr>
-          <tr>
-            <td>Neelansh Garg</td>
-            <td>Summer Research Intern</td>
-            <td>Center for Computational Biology, Indraprastha Institute of Information Technology</td>
-            <td>Database design, Development of DietRx Web Resource </td>
-          </tr>
-          <tr>
-            <td>Rakhi N K</td>
-            <td>PhD Research Scholar</td>
-            <td>Department of Bioscience and Bioengineering, Indian Institute of Technology Jodhpur, Jodhpur</td>
-            <td>Manual data compilation, Annotation and curation, Quality Check, Analysis</td>
-          </tr>
-          <tr>
-            <td>Rujhil Jain</td>
-            <td>M.Tech</td>
-            <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
-            <td>Contributed to backend development, database enhancements, and system optimization</td>
-          </tr>
-          <tr>
-            <td>Sneha Nandi</td>
-            <td>M.Tech</td>
-            <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
-            <td>Focused on data handling, backend consistency, and performance improvements</td>
-          </tr>
-          <tr>
-            <td>Shriyansh Bhardwaj</td>
-            <td>M.Tech</td>
-            <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
-            <td>Enhanced the user interface, optimized web functionalities, and supported system integration</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="card-header" id="headingSeventeen">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#18" aria-expanded="false">
+            Q18: Who is the team behind DietRx?
+          </button>
+        </h5>
+      </div>
+      <div id="18" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Affiliation</th>
+              <th>Contribution</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="{{url_for('contact_us')}}">Ganesh Bagler</a>
+                </td>
+                <td>Project Head</td>
+                <td>Center for Computational Biology, Indraprastha Institute of Information Technology (IIIT-Delhi), New
+                  Delhi</td>
+                <td>Idea conception, Project design and management, Database design and implementation </td>
+              </tr>
+              <tr>
+                <td>Rudraksh Tuwani</td>
+                <td>Research Assistant</td>
+                <td>Center for Computational Biology, Indraprastha Institute of Information Technology</td>
+                <td>Data Curation, Database design, Development of DietRx Web Resource, Data Visualisation and Data
+                  Analytics</td>
+              </tr>
+              <tr>
+                <td>Neelansh Garg</td>
+                <td>Summer Research Intern</td>
+                <td>Center for Computational Biology, Indraprastha Institute of Information Technology</td>
+                <td>Database design, Development of DietRx Web Resource </td>
+              </tr>
+              <tr>
+                <td>Rakhi N K</td>
+                <td>PhD Research Scholar</td>
+                <td>Department of Bioscience and Bioengineering, Indian Institute of Technology Jodhpur, Jodhpur</td>
+                <td>Manual data compilation, Annotation and curation, Quality Check, Analysis</td>
+              </tr>
+              <tr>
+                <td>Rujhil Jain</td>
+                <td>M.Tech</td>
+                <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
+                <td>Contributed to backend development, database enhancements, and system optimization</td>
+              </tr>
+              <tr>
+                <td>Sneha Nandi</td>
+                <td>M.Tech</td>
+                <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
+                <td>Focused on data handling, backend consistency, and performance improvements</td>
+              </tr>
+              <tr>
+                <td>Shriyansh Bhardwaj</td>
+                <td>M.Tech</td>
+                <td>Department of Computer Science And Engineering, IIIT-Delhi, Delhi</td>
+                <td>Enhanced the user interface, optimized web functionalities, and supported system integration</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="card">
-  <div class="card-header" id="headingFifteen">
-    <h5 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#19" aria-expanded="false">
-        Q19: How do I cite DietRx?
-      </button>
-    </h5>
-  </div>
-  <div id="19" class="collapse" data-parent="#accordion">
-    <div class="card-body">
-      Rudraksh Tuwani†, Neelansh Garg†, Rakhi NK, Rujhil Jain, Sneha Nandi, Shriyansh Bhardwaj and Ganesh Bagler*, DietRx: An integrative resource to explore
-      interrelationships among foods, diseases, genes and chemicals (2025),
-      <a href="http://cosylab.iiitd.edu.in/dietrx/">http://cosylab.iiitd.edu.in/dietrx/</a>.
-      <br><br> †Equal contribution *Corresponding Author
+    <div class="card">
+      <div class="card-header" id="headingFifteen">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#19" aria-expanded="false">
+            Q19: How do I cite DietRx?
+          </button>
+        </h5>
+      </div>
+      <div id="19" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          Rudraksh Tuwani†, Neelansh Garg†, Rakhi NK, Rujhil Jain, Sneha Nandi, Shriyansh Bhardwaj and Ganesh Bagler*,
+          DietRx: An integrative resource to explore
+          interrelationships among foods, diseases, genes and chemicals (2025),
+          <a href="http://cosylab.iiitd.edu.in/dietrx/">http://cosylab.iiitd.edu.in/dietrx/</a>.
+          <br><br> †Equal contribution *Corresponding Author
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 
-<style>
-body {
-  background: #f2fdfb;
-  font-family: 'Segoe UI', sans-serif;
-}
+    <style>
+      body {
+        background: #f2fdfb;
+        font-family: 'Segoe UI', sans-serif;
+      }
 
-/* Jumbotron Header */
-.jumbotron {
-  background: linear-gradient(to right, #d6f5ef, #e7fcf9);
-  border-radius: 2em;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  padding: 2em 1.5em;
-}
+      /* Jumbotron Header */
+      .jumbotron {
+        background: linear-gradient(to right, #d6f5ef, #e7fcf9);
+        border-radius: 2em;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        padding: 2em 1.5em;
+      }
 
-.jumbotron h3 {
-  color: #166d63;
-  font-weight: 700;
-}
+      .jumbotron h3 {
+        color: #166d63;
+        font-weight: 700;
+      }
 
-.jumbotron p {
-  color: #333;
-  font-size: 1.1em;
-}
+      .jumbotron p {
+        color: #333;
+        font-size: 1.1em;
+      }
 
-/* Accordion Section */
-#accordion {
-  background: #ffffff;
-  border-radius: 1.5em;
-  padding: 2em;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-  margin-bottom: 3em;
-}
+      /* Accordion Section */
+      #accordion {
+        background: #ffffff;
+        border-radius: 1.5em;
+        padding: 2em;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+        margin-bottom: 3em;
+      }
 
-/* Card Styling */
-.card {
-  border: none;
-  border-radius: 1em;
-  margin-bottom: 1em;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
-}
+      /* Card Styling */
+      .card {
+        border: none;
+        border-radius: 1em;
+        margin-bottom: 1em;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+      }
 
-.card:hover {
-  box-shadow: 0 6px 16px rgba(22, 109, 99, 0.1);
-}
+      .card:hover {
+        box-shadow: 0 6px 16px rgba(22, 109, 99, 0.1);
+      }
 
-/* Card Header */
-.card-header {
-  background-color: #d1f4ef;
-  padding: 1em 1.2em;
-  cursor: pointer;
-  transition: background 0.3s;
-}
+      /* Card Header */
+      .card-header {
+        background-color: #d1f4ef;
+        padding: 1em 1.2em;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
 
-.card-header:hover {
-  background-color: #bdf0e8;
-}
+      .card-header:hover {
+        background-color: #bdf0e8;
+      }
 
-.card-header button {
-  font-weight: 600;
-  font-size: 1.05em;
-  color: #166d63;
-  text-decoration: none;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  position: relative;
-}
+      .card-header button {
+        font-weight: 600;
+        font-size: 1.05em;
+        color: #166d63;
+        text-decoration: none;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        position: relative;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
 
-.card-header button:after {
-  content: '+';
-  float: right;
-  font-size: 1.2em;
-  transition: transform 0.3s ease;
-}
+      .card-header button:after {
+        content: '+';
+        float: right;
+        font-size: 1.2em;
+        transition: transform 0.3s ease;
+      }
 
-.card-header button[aria-expanded="true"]:after {
-  content: '−';
-}
+      .card-header button[aria-expanded="true"]:after {
+        content: '−';
+      }
 
-/* Card Body */
-.card-body {
-  background: #ffffff;
-  padding: 1.5em;
-  font-size: 1.05em;
-  line-height: 1.6;
-  color: #333;
-  animation: fadeIn 0.4s ease;
-}
+      /* Card Body */
+      .card-body {
+        background: #ffffff;
+        padding: 1.5em;
+        font-size: 1.05em;
+        line-height: 1.6;
+        color: #333;
+        animation: fadeIn 0.4s ease;
+        word-break: break-word;
+      }
 
-/* Images */
-.card-body img {
-  border-radius: 1em;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
-}
+      /* Images */
+      .card-body img {
+        border-radius: 1em;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+        max-width: 100%;
+        height: auto;
+      }
 
-/* Tables */
-.card-body table th {
-  background-color: #166d63;
-  color: white;
-}
+      /* Tables */
+      .card-body table th {
+        background-color: #166d63;
+        color: white;
+      }
 
-.card-body table td {
-  vertical-align: middle;
-}
+      .card-body table td {
+        vertical-align: middle;
+      }
 
-/* Iframe */
-.card-body iframe {
-  border-radius: 1em;
-  width: 100%;
-  border: none;
-  margin-top: 1em;
-}
+      /* Iframe */
+      .card-body iframe {
+        border-radius: 1em;
+        width: 100%;
+        border: none;
+        margin-top: 1em;
+      }
 
-/* Collapse Animation */
-.collapse:not(.show) {
-  display: none;
-}
-.collapsing {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.4s ease;
-}
+      /* Collapse Animation */
+      .collapse:not(.show) {
+        display: none;
+      }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+      .collapsing {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.4s ease;
+      }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .jumbotron h3 {
-    font-size: 1.5em;
-  }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
 
-  .card-header button {
-    font-size: 1em;
-  }
-}
-</style>
-{%endblock%}
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+        .jumbotron h3 {
+          font-size: 1.5em;
+        }
+
+        .card-header button {
+          font-size: 1em;
+        }
+      }
+    </style>
+    {%endblock%}
