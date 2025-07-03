@@ -62,14 +62,15 @@ def food_disease(request, subcategory, food_id=None, disease_id=None):
         x = {}
 
         # Safe defaults
-        positive_pmid = res.positive_pmid or ''
-        negative_pmid = res.negative_pmid or ''
-        pubchem_ids = res.pubchem_id or ''
+        positive_pmid = [p for p in (res.positive_pmid or '').split('|') if p.strip()]
+        negative_pmid = [n for n in (res.negative_pmid or '').split('|') if n.strip()]
+        pubchem_ids = [c for c in (res.pubchem_id or '').split('|') if c.strip()]
+
 
         # Split safely
-        positive_associations = len(positive_pmid.split('|')) if positive_pmid else 0
-        negative_associations = len(negative_pmid.split('|')) if negative_pmid else 0
-        via_chemicals = len(pubchem_ids.split('|')) if pubchem_ids else 0
+        positive_associations = len(positive_pmid)
+        negative_associations = len(negative_pmid)
+        via_chemicals = len(pubchem_ids)
 
         disease = res.disease
         food = res.food
@@ -167,8 +168,7 @@ def disease_chemical(request, subcategory, disease_id=None, pubchem_id=None):
 
     temp = []
     for res in results:
-        via_genes_raw = res.via_genes or ''
-        via_genes = via_genes_raw.split('|') if via_genes_raw else []
+        via_genes = [g for g in (res.via_genes or '').split('|') if g.strip()]
         temp.append({
             'association': res,
             'via_genes': via_genes,
@@ -223,8 +223,7 @@ def chemical_gene(request, subcategory, gene_id=None, pubchem_id=None):
 
     temp = []
     for res in results:
-        via_diseases_raw = res.via_diseases or ''
-        via_diseases = via_diseases_raw.split('|') if via_diseases_raw else []
+        via_diseases = [d for d in (res.via_diseases or '').split('|') if d.strip()]
 
         temp.append({
             'association': res,
@@ -341,8 +340,7 @@ def disease_chemical(request, subcategory, disease_id=None, pubchem_id=None):
 
     temp = []
     for res in results:
-        via_genes_raw = res.via_genes or ''
-        via_genes = via_genes_raw.split('|') if via_genes_raw else []
+        via_genes = [g for g in (res.via_genes or '').split('|') if g.strip()]
         temp.append({
             'association': res,
             'via_genes': via_genes,
@@ -395,7 +393,7 @@ def disease_gene(request, subcategory, gene_id=None, disease_id=None):
 
     temp = []
     for res in results:
-        via_chemicals = (res.via_chemicals or '').split('|')
+        via_chemicals = [c for c in (res.via_chemicals or '').split('|') if c.strip()]
         temp.append({
             'association': res,
             'via_chemicals': via_chemicals,

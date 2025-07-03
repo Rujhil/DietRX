@@ -1,158 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="container" id="analytics">
+  <h2>DietRx Analytics</h2>
 
-
-<head>
-  <meta charset="UTF-8">
-  <title>DietRx Advanced Analytics</title>
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-
-    h2 {
-      color: #2c3e50;
-      margin-bottom: 40px;
-      font-size: 2em;
-      text-align: center;
-      padding-top: 30px;
-    }
-
-    .section {
-      margin-bottom: 60px;
-      padding: 20px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .section h4 {
-      margin-bottom: 20px;
-      font-size: 1.4em;
-      color: #3498db;
-      text-align: center;
-    }
-
-    .section p {
-      color: #666;
-      font-size: 1.1em;
-    }
-
-    #chart-top-foods-chem,
-    #chart-top-foods-syn,
-    #chart-top50-foods,
-    #chart-top-diseases-paths {
-      border-radius: 10px;
-    }
-
-    .embed-responsive {
-      margin-bottom: 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .btn-primary {
-      display: block;
-      width: 100%;
-      background-color: #3498db;
-      color: white;
-      text-align: center;
-      padding: 12px;
-      border-radius: 5px;
-      font-size: 1.2em;
-      text-decoration: none;
-      margin-top: 20px;
-    }
-
-    .btn-primary:hover {
-      background-color: #2980b9;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      iframe {
-        height: 350px;
-      }
-
-      .section h4 {
-        font-size: 1.2em;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-    <h2>DietRx Advanced Analytics</h2>
-
-    <!-- 3. Top 50 Foods by Chemical Count -->
-    <div class="section">
-      <h4>Top 50 Foods by Chemical Count</h4>
-      <div id="chart-top50-foods" style="height:800px;"></div>
-    </div>
-
-    <!-- 2. Top 20 Foods by Number of Synonyms -->
-    <div class="section">
-      <h4>Top 20 Foods by Number of Synonyms</h4>
-      <div id="chart-top-foods-syn" style="height:400px;"></div>
-    </div>
-
-    <!-- 4. Top Diseases by Chemical-Gene Pathways -->
-    <div class="section">
-      <h4>Top Diseases by Chemical-Gene Pathways</h4>
-      <div id="chart-top-diseases-paths" style="height:600px;"></div>
-    </div>
-
+  <!-- Buttons -->
+  <div class="btn-group mb-4 d-flex justify-content-center flex-wrap" role="group" aria-label="Analytics Graphs">
+    <button id="btn-plant" class="btn btn-primary btn-analytics" onclick="showGraph('chart-plant', this)" aria-pressed="false">Plant</button>
+    <button id="btn-plantder" class="btn btn-primary btn-analytics" onclick="showGraph('chart-plantder', this)" aria-pressed="false">Plant Derivative</button>
+    <button id="btn-alcoholicbev" class="btn btn-primary btn-analytics" onclick="showGraph('chart-alcoholicbev', this)" aria-pressed="false">Alcoholic Beverages</button>
+    <button id="btn-dairy" class="btn btn-primary btn-analytics" onclick="showGraph('chart-dairy', this)" aria-pressed="false">Dairy</button>
+    <button id="btn-meategg" class="btn btn-primary btn-analytics" onclick="showGraph('chart-meategg', this)" aria-pressed="false">Meat & Eggs</button>
   </div>
 
-  <script>
-    function drawBar(endpoint, elementId, labelKey, valueKey, title, xLabel) {
-      fetch(endpoint)
-        .then(r => r.json())
-        .then(data => {
-          if (!data.length) {
-            document.getElementById(elementId).innerHTML = '<p>No data.</p>';
-            return;
-          }
+  <!-- Chart Sections -->
+  <div class="chart-sections">
+    <div class="section" id="section-alcoholicbev" style="display:none;">
+      <div id="chart-alcoholicbev" style="height:600px;"></div>
+    </div>
+    <div class="section" id="section-dairy" style="display:none;">
+      <div id="chart-dairy" style="height:600px;"></div>
+    </div>
+    <div class="section" id="section-meategg" style="display:none;">
+      <div id="chart-meategg" style="height:600px;"></div>
+    </div>
+    <div class="section" id="section-plant" style="display:none;">
+      <div id="chart-plant" style="height:600px;"></div>
+    </div>
+    <div class="section" id="section-plantder" style="display:none;">
+      <div id="chart-plantder" style="height:600px;"></div>
+    </div>
+  </div>
+</div>
 
-          Plotly.newPlot(elementId, [{
-            x: data.map(d => d[labelKey]),
-            y: data.map(d => d[valueKey]),
-            type: 'bar',
-            hovertemplate: '<b>%{x}</b><br>Value: %{y}<extra></extra>',
-            marker: {
-              color: '#207872',  // Teal-like color
-              opacity: 0.8,
-              line: {
-                color: 'rgba(0, 0, 0, 0.2)',  // Border for bars
-                width: 1
-              }
-            }
-          }], {
-            title: title,
-            margin: { t: 40, b: 150 },
-            xaxis: { tickangle: -45, title: xLabel },
-            plot_bgcolor: '#f9f9f9',  // Lighter background
-            paper_bgcolor: '#f9f9f9',
-          });
-        });
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+  function showGraph(graphId, btn) {
+    $('.section').hide();
+    $('.btn-analytics')
+      .removeClass('btn-analytics-active')
+      .attr('aria-pressed', 'false');
+
+    if (btn) {
+      $(btn)
+        .addClass('btn-analytics-active')
+        .attr('aria-pressed', 'true');
     }
 
-    drawBar('/api/analytics/top10_foods_by_chemicals', 'chart-top-foods-chem', 'display_name', 'chemical_count', 'Top 10 Foods by Chemical Content', 'Food');
-    drawBar('/api/analytics/top20_foods_by_synonyms', 'chart-top-foods-syn', 'display_name', 'syn_count', 'Top 20 Foods by Synonyms', 'Food');
-    drawBar('/api/analytics/top50_foods_by_chemicals', 'chart-top50-foods', 'display_name', 'chemical_count', 'Top 50 Foods by Chemical Count', 'Food');
-    drawBar('/api/analytics/top_diseases_by_paths', 'chart-top-diseases-paths', 'disease_name', 'chemical_gene_links', 'Top Diseases by Chemical-Gene Pathways', 'Disease');
-  </script>
+    const mapping = {
+      'chart-alcoholicbev': ['alcoholicbev', 'section-alcoholicbev', 'Alcoholic Beverages'],
+      'chart-dairy': ['dairy', 'section-dairy', 'Dairy'],
+      'chart-meategg': ['meategg', 'section-meategg', 'Meat & Eggs'],
+      'chart-plant': ['plant', 'section-plant', 'Plant'],
+      'chart-plantder': ['plantder', 'section-plantder', 'Plant Derivative']
+    };
 
-</body>
+    if (mapping[graphId]) {
+      const [slug, sectionId, title] = mapping[graphId];
+      $(`#${sectionId}`).fadeIn(300);
+      drawCSVBar(slug, graphId, `Top 50 ${title} by Positive vs Negative`);
+    }
+  }
 
-</html>
+  function drawCSVBar(slug, elementId, title) {
+    const chartContainer = document.getElementById(elementId);
+
+    fetch(`/dietrx/api/analytics/top50_csv/${slug}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!Array.isArray(data) || data.length === 0) {
+          chartContainer.innerHTML = '<p>No data available.</p>';
+          return;
+        }
+
+        data.sort((a, b) => b.positive_count - a.positive_count);
+
+        const y = data.map(d => d.display_name);
+        const pos = data.map(d => d.positive_count);
+        const neg = data.map(d => d.negative_count);
+
+        Plotly.newPlot(elementId, [
+          {
+            y: y,
+            x: pos,
+            name: 'Positive',
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: '#28a745' }
+          },
+          {
+            y: y,
+            x: neg,
+            name: 'Negative',
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: '#dc3545' }
+          }
+        ], {
+          title: title,
+          barmode: 'stack',
+          xaxis: {
+            title: {
+              text: 'Number of Publications',
+              font: { size: 16, color: '#207872' }
+            },
+            tickfont: { color: '#207872' },
+            gridcolor: '#d6f2ef'
+          },
+          yaxis: {
+            title: {
+              text: 'Food',
+              font: { size: 16, color: '#207872' }
+            },
+            tickfont: { color: '#207872' },
+            automargin: true
+          },
+          plot_bgcolor: '#f0ffe0',
+          paper_bgcolor: '#f0ffe0',
+          height: 700,
+          margin: { l: 200, t: 50, r: 50 }
+        });
+      })
+      .catch(error => {
+        console.error("Chart load failed:", error);
+        chartContainer.innerHTML = '<p style="color:red;">Error loading chart.</p>';
+      });
+  }
+
+  window.addEventListener('load', function () {
+    $('#btn-alcoholicbev').addClass('btn-analytics-active').attr('aria-pressed', 'true');
+    showGraph('chart-alcoholicbev', document.getElementById('btn-alcoholicbev'));
+  });
+</script>
