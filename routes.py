@@ -26,7 +26,7 @@ stats = dict(
 	chems=6992,
 )
 
-@app.route('/', methods=['GET']) 
+# @app.route('/', methods=['GET']) 
 @app.route('/dietrx/', methods=['GET'])
 @app.route('/dietrx/index', methods=['GET'])
 def index():
@@ -632,8 +632,8 @@ CSV_MAP = {
     'plantder':    'top50_PlantDer.csv',
 }
 
-@app.route('/api/analytics/top50_csv/<slug>')
-@app.route('/api/analytics/top50_csv/<slug>')
+@app.route('/dietrx/api/analytics/top50_csv/<slug>')
+@app.route('/dietrx/api/analytics/top50_csv/<slug>')
 def top50_csv(slug):
     import os
     import pandas as pd

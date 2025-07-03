@@ -741,7 +741,7 @@
 
 
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
   <script>
     function showGraph(graphId, btn) {
       $('.section').hide();
@@ -802,7 +802,7 @@
 
     function drawCSVBar(slug, elementId, title) {
       fetch(`/api/analytics/top50_csv/${slug}`)
-        .then(r => r.json())
+        .then (r => r.json())
         .then(data => {
           if (!data.length) {
             document.getElementById(elementId).innerHTML = '<p>No data available.</p>';

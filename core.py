@@ -5,7 +5,7 @@ from config import Config
 from elasticsearch import Elasticsearch
 import pickle as pkl
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+app = Flask(__name__, static_url_path='/dietrx/static', static_folder='static')
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
