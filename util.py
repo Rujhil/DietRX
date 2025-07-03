@@ -277,8 +277,8 @@ def food_gene(request, subcategory, gene_id=None, food_id=None):
 
     temp = []
     for res in results:
-        disease_ids = (res.via_diseases or '').split('|')
-        pubchem_ids = (res.via_chemicals or '').split('|')
+        disease_ids = [d for d in (res.via_diseases or '').split('|') if d.strip()]
+        pubchem_ids = [c for c in (res.via_chemicals or '').split('|') if c.strip()]
 
         temp.append({
             'association': res,
