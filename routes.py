@@ -8,6 +8,7 @@ from forms import ChemicalSearchForm
 import subprocess
 import numpy as np
 import pandas as pd
+import os
 
 from datetime import date
 
@@ -633,12 +634,7 @@ CSV_MAP = {
 }
 
 @app.route('/dietrx/api/analytics/top50_csv/<slug>')
-@app.route('/dietrx/api/analytics/top50_csv/<slug>')
 def top50_csv(slug):
-    import os
-    import pandas as pd
-    from flask import jsonify, current_app as app
-
     CSV_MAP = {
         'alcoholicbev': 'top50_AlcoholicBev.csv',
         'dairy': 'top50_Dairy.csv',
@@ -660,9 +656,9 @@ def top50_csv(slug):
     df = pd.read_csv(csv_path)
     return jsonify(df.to_dict(orient='records'))
 
-@app.route('/analytics-preview')
-def analytics_preview():
-    return render_template("common/analytics.html")
+# @app.route('/analytics-preview')
+# def analytics_preview():
+#     return render_template("common/analytics.html")
 
 @app.route('/analytics')
 def analytics():
