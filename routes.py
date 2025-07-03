@@ -668,7 +668,6 @@ def analytics_preview():
 def analytics():
     return render_template("common/analytics.html")
 
-
 @app.route('/dietrx/contact_us', methods=['GET'])
 def contact_us():
 	return render_template('common/contact_us.html')

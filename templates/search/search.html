@@ -642,7 +642,7 @@
       <hr />
       <h5 class="container">
         <span>
-          <img src="/static/images/search_logo.png" class="d-inline-block align-top"
+          <img src="{{ url_for('static', filename='images/search_logo.png') }}" class="d-inline-block align-top"
             style="max-width: 1em; max-height: 1em;">
         </span>
         <strong>&nbsp;&nbsp;Search</strong>
@@ -859,8 +859,6 @@
           });
         });
     }
-
-
     // drawBar('/api/analytics/top50_foods_by_chemicals', 'chart-top50-foods', 'display_name', 'chemical_count', 'Top 50 Foods by Chemical Count', 'Food');
     // drawBar('/api/analytics/top20_foods_by_synonyms', 'chart-top-foods-syn', 'display_name', 'syn_count', 'Top 20 Foods by Synonyms', 'Food');
     // drawBar('/api/analytics/top_diseases_by_paths', 'chart-top-diseases-paths', 'disease_name', 'chemical_gene_links', 'Top Diseases by Chemical-Gene Pathways', 'Disease');
