@@ -1,0 +1,14 @@
+# Large data directories
+# data/
+# **/*.tsv
+# **/*.csv
+notebooks/
+**/__pycache__/
+**/*.pyc
+
+# Environment and git
+.git/
+.github/
+env/
+venv/
+*.egg-info/
