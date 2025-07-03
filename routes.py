@@ -324,7 +324,8 @@ def get_associations():
 
 		association = Disease_gene.query.filter_by(
 			disease_id=disease_id, gene_id=gene_id).first()
-		via_chemicals = association.via_chemicals.split('|')
+		via_chemicals = association.via_chemicals.split('|') if association and association.via_chemicals else []
+
 
 		result = {'disease': disease,
                     'gene': gene,
