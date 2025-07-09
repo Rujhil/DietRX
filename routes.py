@@ -86,18 +86,32 @@ def search():
 
 def find_similar(smiles):
     """ Runs a shell command to find similar molecules given a query molecule """
-    
-    allmol_path = './static/allmol.fs'
-    results_path = './static/temp/results.sdf'
+
+    static_dir = os.path.join(os.getcwd(), 'static')
+    temp_dir = os.path.join(static_dir, 'temp')
+    os.makedirs(temp_dir, exist_ok=True)  # Ensure temp directory exists
+
+    allmol_path = os.path.join(static_dir, 'allmol.fs')
+    results_path = os.path.join(temp_dir, 'results.sdf')
 
     try:
-        subprocess.check_call(['obabel', allmol_path, '-O', results_path, '-s', smiles, '-at', '0.4'],
-                              cwd=r'.\static')
+        subprocess.check_call(
+            ['obabel', allmol_path, '-O', results_path, '-s', smiles, '-at', '0.4'],
+            cwd=static_dir
+        )
     except FileNotFoundError as e:
-        print(f"Error: {e}")
+        print(f"Error: obabel not found: {e}")
         return []
+    except subprocess.CalledProcessError as e:
+        print(f"Error running obabel: {e}")
+        return []
+
+    if not os.path.exists(results_path):
+        print("Error: results.sdf not created.")
+        return []
+
     results = pybel.readfile('sdf', results_path)
-    mol_ids = [mol.data['pubchem_id'] for mol in results]
+    mol_ids = [mol.data['pubchem_id'] for mol in results if 'pubchem_id' in mol.data]
 
     return mol_ids
 
