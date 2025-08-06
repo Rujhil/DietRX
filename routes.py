@@ -117,47 +117,44 @@ def find_similar(smiles):
 
 
 def process_search_query(formdata):
-	search_by_smiles = False
+    search_by_smiles = False
+    results = Chemical.query.filter()
 
-	results = Chemical.query.filter()
-	for field in ['common_name', 'iupac_name', 'pubchem_id']:
-		key = formdata.get(field) or ''
-		key = key.strip()
+    for field in ['common_name', 'iupac_name', 'pubchem_id']:
+        key = formdata.get(field) or ''
+        key = key.strip()
 
-		if key:
-			results = results.filter(getattr(Chemical, field).ilike(key))
+        if key:
+            results = results.filter(getattr(Chemical, field).ilike(key))
 
-	# Functional group
-	if formdata.get('functional_group'):
-		try:
-			fgid = fgname2id[formdata.get('functional_group').lower().strip()]
-		except KeyError:
-			fgid = len(fgname2id) + 1
+    if formdata.get('functional_group'):
+        try:
+            fgid = fgname2id[formdata.get('functional_group').lower().strip()]
+        except KeyError:
+            fgid = len(fgname2id) + 1
 
-		results = results.filter(Chemical.functional_group_idx.contains(fgid))
+        results = results.filter(Chemical.functional_group_idx.contains(fgid))
 
-	# Molecular properties.
-	for field in ['molecular_weight', 'hba_count', 'hbd_count', 'num_rings',
-               'num_rotatablebonds', 'number_of_aromatic_bonds', 'alogp']:
-		if formdata.get(field):
-			field_query = formdata.get(field).strip()
+    for field in ['molecular_weight', 'hba_count', 'hbd_count', 'num_rings',
+                  'num_rotatablebonds', 'number_of_aromatic_bonds', 'alogp']:
+        if formdata.get(field):
+            field_query = formdata.get(field).strip()
 
-			if ':' in field_query:
-				low, high = field_query.split(':')
+            if ':' in field_query:
+                low, high = field_query.split(':')
+                results = results.filter((getattr(Chemical, field) >= float(low)) & 
+                                         (getattr(Chemical, field) <= float(high)))
+            else:
+                results = results.filter_by(**{field: float(field_query)})
 
-				results = results.filter((getattr(Chemical, field) >= float(low)) & (
-					getattr(Chemical, field) <= float(high)))
-			else:
-				results = results.filter_by(**{field: float(field_query)})
 
-	# Filter data further based on similarity coefficient
-	if formdata.get('smiles'):
-		smiles = formdata.get('smiles').strip()
-		mol_ids = find_similar(smiles)
-		results = results.filter(Chemical.pubchem_id.in_(mol_ids))
-		search_by_smiles = True
+    if formdata.get('smiles'):
+        smiles = formdata.get('smiles').strip()
+        mol_ids = find_similar(smiles)  
+        results = results.filter(Chemical.pubchem_id.in_(mol_ids))
+        search_by_smiles = True
 
-	return results, search_by_smiles
+    return results, search_by_smiles
 
 
 @app.route('/dietrx/chemical_search', methods=['GET'])
@@ -166,29 +163,31 @@ def chemical_search():
     fields = ['PubChem ID', 'Common Name', 'Functional Group(s)', 'SMILES', 'Details']
 
     if search_by_smiles:
-        fields.append('Similarity')
-        query_fp = pybel.readstring("smi", request.args.get('smiles')).calcfp()
+        fields.append('Similarity')  
+        query_fp = pybel.readstring("smi", request.args.get('smiles')).calcfp()  
 
     res = list()
     for r in results:
         values = [
             r.pubchem_id,                              
-            r.common_name or r.iupac_name,             
+            r.common_name or r.iupac_name,              
             r.functional_group,                        
             r.smiles or 'N/A',                        
         ]
         if search_by_smiles:
-            fp = pybel.readstring("smi", r.smiles).calcfp()
+            fp = pybel.readstring("smi", r.smiles).calcfp()  
             sim = np.round(query_fp | fp, 2)  
             values.append(sim)  
 
-        values.append(url_for('get_chemical', pubchem_id=r.pubchem_id))
+        values.append(url_for('get_chemical', pubchem_id=r.pubchem_id))  
         res.append(values)
+
     return render_template('chemical/chemical_search_results.html',
                            fields=fields,
                            results=res,
                            search_by_smiles=search_by_smiles,
                            request=request)
+
 
 @app.route('/dietrx/chemical_advanced_search', methods=['GET'])
 def chemical_advanced_search():
